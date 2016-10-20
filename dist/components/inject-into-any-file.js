@@ -27,6 +27,7 @@ var InjectIntoAnyFile = (function () {
             }
             cb();
         });
+        return new Promise(function (resolve, reject) { resolve(); });
     };
     InjectIntoAnyFile.prototype.injectIntoCss = function (asset) {
         var modAsset = "/** [" + config.SHORT + "] Build version: " + this.context.version + " **/ " + endOfLine + " " + asset.source() + " ";

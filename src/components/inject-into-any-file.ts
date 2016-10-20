@@ -34,6 +34,7 @@ class InjectIntoAnyFile{
             }
             cb();
         });
+        return new Promise((resolve, reject) => { resolve(); })
     }
 
     injectIntoCss(asset) {

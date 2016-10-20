@@ -15,7 +15,7 @@ class InjectIntoHtml{
     apply() {
         this.context.compiler.plugin('emit', (compilation, cb) => {
             for ( var basename in compilation.assets ) {
-                if(/^index\.html$/.test(basename)) {
+                if(this.context.options.injectIntoHtmlRegex.test(basename)) {
                     let asset = compilation.assets[basename];
                     let modFile = asset.source().replace(/(\<\{version\}\>)/g, this.context.version);
                     asset.source = () => modFile;
@@ -23,6 +23,7 @@ class InjectIntoHtml{
             }
             cb();
         });
+        return new Promise((resolve, reject) => { resolve(); })
     }
 }
 
