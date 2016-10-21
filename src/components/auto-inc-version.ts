@@ -1,10 +1,11 @@
-var semver  = require('semver');
-var config  = require('../config');
-var path    = require('path');
-var fs      = require('fs');
-var u       = require('../core/utils');
-var chalk   = require('chalk');
-var Promise = require('bluebird');
+const semver  = require('semver');
+const config  = require('../config');
+const path    = require('path');
+const fs      = require('fs');
+const u       = require('../core/utils');
+const chalk   = require('chalk');
+const Promise = require('bluebird');
+const log   = require('../core/log');
 
 class IncVersion{
 
@@ -28,7 +29,6 @@ class IncVersion{
      */
     private start() {
         this.packageFile = this.openPackageFile();
-        let argv = process.argv;
         if( u.isArgv('major') ) {
             this.major();
         }
@@ -37,8 +37,6 @@ class IncVersion{
         }else if( u.isArgv('patch') ) {
             this.patch();
         }else {
-            console.log(chalk.bgRed(`[@] ${config.SHORT} error > `)+' --major --minor --patch missing in arguments. ');
-            console.log(chalk.bgRed(`[@] ${config.SHORT} how to> `)+' webpack -w --major');
             this.reject();
         }
     }
@@ -59,8 +57,9 @@ class IncVersion{
         this.packageFile.version = newVersion;
         fs.writeFile(path.normalize(config.PATH_PACKAGE), JSON.stringify(this.packageFile, null, 4), (err) => {
             if(err) {this.reject(err); return console.log(err);}
-            console.log('');
-            console.log(chalk.bgGreen(`[@] ${config.SHORT} OK > `)+' package.json updated : ' + this.packageFile.version);
+            log.info(`autoIncVersion : new version : ${newVersion}`)
+            log.info('package.json updated!');
+            this.context.version = newVersion;
             this.resolve();
         });
     }

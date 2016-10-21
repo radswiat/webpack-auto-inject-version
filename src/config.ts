@@ -2,18 +2,23 @@ module.exports = {
     NAME : 'Auto Inject Version',
     SHORT : 'AIV',
     PATH_PACKAGE : './package.json',
-    COMPONENTS : [
+    NON_WEBPACK_COMPONENTS : [
         {
             option  : 'autoIncrease',
             path    : './components/auto-inc-version'
-        },
-        {
-            option  : 'injectIntoHtml',
-            path    : './components/inject-into-html'
-        },
-        {
-            option  : 'injectIntoAnyFile',
-            path    : './components/inject-into-any-file'
         }
-    ]
+    ],
+    WEBPACK_COMPONENTS : [
+        {
+            option  : 'injectByTag',
+            path    : './components/inject-by-tag'
+        },
+        {
+            option  : 'injectAsComment',
+            path    : './components/inject-as-comment'
+        }
+    ],
+    LOGS_TEXT : {
+        AIS_START   : 'Auto inject version started'
+    }
 }

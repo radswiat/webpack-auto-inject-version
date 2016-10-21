@@ -5,6 +5,7 @@ var fs = require('fs');
 var u = require('../core/utils');
 var chalk = require('chalk');
 var Promise = require('bluebird');
+var log = require('../core/log');
 var IncVersion = (function () {
     function IncVersion(context) {
         this.context = context;
@@ -19,7 +20,6 @@ var IncVersion = (function () {
     };
     IncVersion.prototype.start = function () {
         this.packageFile = this.openPackageFile();
-        var argv = process.argv;
         if (u.isArgv('major')) {
             this.major();
         }
@@ -30,8 +30,6 @@ var IncVersion = (function () {
             this.patch();
         }
         else {
-            console.log(chalk.bgRed("[@] " + config.SHORT + " error > ") + ' --major --minor --patch missing in arguments. ');
-            console.log(chalk.bgRed("[@] " + config.SHORT + " how to> ") + ' webpack -w --major');
             this.reject();
         }
     };
@@ -46,8 +44,9 @@ var IncVersion = (function () {
                 _this.reject(err);
                 return console.log(err);
             }
-            console.log('');
-            console.log(chalk.bgGreen("[@] " + config.SHORT + " OK > ") + ' package.json updated : ' + _this.packageFile.version);
+            log.info("autoIncVersion : new version : " + newVersion);
+            log.info('package.json updated!');
+            _this.context.version = newVersion;
             _this.resolve();
         });
     };

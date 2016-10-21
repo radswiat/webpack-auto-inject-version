@@ -1,10 +1,11 @@
 /// <reference path='../typings/index.d.ts' />
-var chalk       = require('chalk');
-var fs          = require('fs');
-var path        = require('path');
-var config      = require('./config');
-var Promise     = require('bluebird');
-var u           = require('./core/utils');
+const chalk     = require('chalk');
+const fs        = require('fs');
+const path      = require('path');
+const config    = require('./config');
+const Promise   = require('bluebird');
+const u         = require('./core/utils');
+const log       = require('./core/log');
 
 'use strict';
 
@@ -13,45 +14,86 @@ class WebpackAutoInject{
     private options;
     private compiler;
     private version;
-    private components;
 
+    /**
+     * Default options
+     */
     static options = {
         autoIncrease            : true,
-        injectIntoHtml          : true,
-        injectIntoHtmlRegex     : /^index\.html$/,
-        injectIntoAnyFile       : true
+        injectAsComment         : true,
+        injectByTag             : true,
+        injectByTagFileRegex    : /^index\.html$/
     }
 
+    /**
+     * Constructor,
+     * called on webpack config load
+     * @param options
+     */
     constructor(options) {
         this.options = u.merge(WebpackAutoInject.options, options);
         var packageFile = JSON.parse(fs.readFileSync(path.normalize(config.PATH_PACKAGE), 'utf8'));
         this.version = packageFile.version;
+        log.call('info', 'AIS_START');
+        this.executeNoneWebpackComponents();
     }
 
+    /**
+     * Webpack apply call,
+     * when webpack is initialized and
+     * plugin has been called by webpack
+     * @param compiler
+     */
     protected apply(compiler) {
-
         this.compiler = compiler;
-
-        this.components = config.COMPONENTS;
-
-        this.executeComponents();
-
+        this.executeWebpackComponents();
     }
 
-    private executeComponents() {
+    /**
+     * Execute none webpack components
+     * - runs as soon as possible,
+     *   > without waiting for webpack init
+     */
+    private executeNoneWebpackComponents() {
+        this.executeComponents(config.NON_WEBPACK_COMPONENTS, () => {
+        });
+    }
 
-        if(!this.components.length) { console.log(chalk.bgRed('AIS: DONE!')); return;}
+    /**
+     * Execute webpack components
+     * - runs when webpack is initialized
+     *   and plugins is called by webpack
+     */
+    private executeWebpackComponents() {
+        this.executeComponents(config.WEBPACK_COMPONENTS, () => {
+        });
+    }
 
-        let comp = this.components.shift();
+    /**
+     * Execute components,
+     * - general layer for comp execution
+     * - used for both, webpack and non webpack comp
+     */
+    private executeComponents(components, done) {
 
-        if(this.options[comp.option]) {
-            let inst = new (require(comp.path))(this);
-            inst.apply().then(() => {
-                this.executeComponents();
-            }, (err) => {console.log(err);})
-        }else{
-            this.executeComponents();
+        // no more components,
+        // finish
+        if(!components.length) { done(); return;}
+
+        // take first component
+        let comp = components.shift();
+
+        // if component is disabled, call next component
+        if(!this.options[comp.option]) {
+            this.executeComponents(components, done);
+            return;
         }
+
+        // execute component
+        let inst = new (require(comp.path))(this);
+        inst.apply().then(() => {
+            this.executeComponents(components, done);
+        }, (err) => {this.executeComponents(components, done);})
     }
 }
 

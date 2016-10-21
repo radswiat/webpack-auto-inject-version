@@ -1,8 +1,9 @@
 /// <reference path='../../typings/index.d.ts' />
-var chalk = require('chalk');
-var path = require('path');
-var endOfLine = require('os').EOL;
-var config = require('./../config');
+const chalk     = require('chalk');
+const path      = require('path');
+const endOfLine = require('os').EOL;
+const config    = require('../config');
+const log       = require('../core/log');
 
 'use strict';
 
@@ -11,7 +12,7 @@ var config = require('./../config');
  * - done by parsing html file,
  *   > replace: <{version}>
  */
-class InjectIntoAnyFile{
+class InjectAsComment{
 
     constructor(private context) {}
 
@@ -30,7 +31,9 @@ class InjectIntoAnyFile{
                     case '.css' :
                         this.injectIntoCss(asset);
                         break;
+                    case 'default': break;
                 }
+                log.info(`InjectAsComment : match : ${basename} : injected : ${this.context.version}`);
             }
             cb();
         });
@@ -53,4 +56,4 @@ class InjectIntoAnyFile{
     }
 }
 
-module.exports = InjectIntoAnyFile;
+module.exports = InjectAsComment;

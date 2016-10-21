@@ -1,4 +1,5 @@
 /// <reference path='../../typings/index.d.ts' />
+const log = require('../core/log');
 
 'use strict';
 
@@ -7,18 +8,24 @@
  * - done by parsing html file,
  *   > replace: <{version}>
  */
-class InjectIntoHtml{
-
+class InjectByTag{
 
     constructor(private context) {}
 
     apply() {
         this.context.compiler.plugin('emit', (compilation, cb) => {
+            // for every output file
             for ( var basename in compilation.assets ) {
-                if(this.context.options.injectIntoHtmlRegex.test(basename)) {
+                // only if match regex
+                if(this.context.options.injectByTagFileRegex.test(basename)) {
+                    let replaced = 0;
                     let asset = compilation.assets[basename];
-                    let modFile = asset.source().replace(/(\<\{version\}\>)/g, this.context.version);
+                    let modFile = asset.source().replace(/(\<\{version\}\>)/g, () => {
+                        replaced++;
+                        return this.context.version;
+                    });
                     asset.source = () => modFile;
+                    log.info(`InjectByTag : match : ${basename} : replaced : ${replaced}`);
                 }
             }
             cb();
@@ -27,4 +34,4 @@ class InjectIntoHtml{
     }
 }
 
-module.exports = InjectIntoHtml;
+module.exports = InjectByTag;

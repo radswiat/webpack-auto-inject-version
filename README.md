@@ -1,6 +1,13 @@
 # In development
 
 ## What
+Auto Inject Version (AIV) can:
+- inject version from package.json into every bundle file as a comment ( at the top )
+- inject version from package.json into any place in your HTML by special tag <{version}>
+- inject version from package.json into any place in CSS/JS file by special tag <{version}>
+- auto increase version by --major, --minor, --patch and then inject as chosen
+
+## Desc
 AIV can inject version number for all your bundle files (css,js,html).<br><br>
 Example js:
 ```js
@@ -38,29 +45,20 @@ $ npm install webpack-auto-inject-version --save-dev
 var WebpackAutoInject = require('webpack-auto-inject-version');
 
 module.exports = {
-
     plugins: [
-        new WebpackAutoInject({
-            autoIncrease        : boolean,
-            injectIntoHtml      : boolean,
-            injectIntoHtmlRegex : regex,
-            injectIntoAnyFile   : boolean
-        })
+        new WebpackAutoInject(options)
     ]
-
 }
 ```
 
 <br>
 
 ## Options
-By default you don't need to pass any options, all options from Usage section are set by default.<br><br>
-
-<br>
 
 ### autoIncrease
 Auto increase package.json number. <br>
 This option requires extra argument to be sent to webpack build. <br>
+It happens before anything else to make sure that your new version is injected into your files.<br>
 Arguments: --major --minor --patch<br><br>
 
 <br>
@@ -76,12 +74,14 @@ Default: true
 
 <br>
 
-### injectIntoHtml
-Inject version number ( increased if autoIncrease is set correctly ) into HTML template<br>
-For this to work you need to place <{version}> inside your html file.<br><br>
-Example:
+### injectByTag
+Inject version number into your file<br>
+Version will replace the <{version}> tag.<br>
 ```html
 <span>My awesome project | <{version}></span>
+```
+```js
+var version = '<{version}>';
 ```
 Default: true
 
@@ -89,14 +89,17 @@ Default: true
 <br>
 
 
-### injectIntoHtmlRegex
-Regex to find your html file, where injectIntoHtml should try to find your <{version}> tag.<br>
+### injectByTagFileRegex
+Regex against file name. If match, injectByTag will try to find version tag and replace it.
+Only html files: /^(.){1,}\.html$/ <br>
+Only js files: ^(.){1,}\.js$ <br>
+Any file: (.){1,} <br>
 Default: /^index\.html$/
 
 
 <br>
 
 
-### injectIntoAnyFile
-This will inject your version file as a comment into any css,js,html file.<br>
+### injectAsComment
+This will inject your version as a comment into any css,js,html file.<br>
 Default: true
