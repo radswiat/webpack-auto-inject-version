@@ -1,4 +1,5 @@
-# In development
+# Auto inject version - Webpack plugin
+## Add version to bundle automatically
 
 ## What
 Auto Inject Version (AIV) can:
