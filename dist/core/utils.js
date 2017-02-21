@@ -2,7 +2,9 @@ var Utils = (function () {
     function Utils() {
     }
     Utils.isArgv = function (arg) {
-        return process.argv.indexOf("--" + arg) >= 0 ? true : false;
+        return Boolean(process.argv.find(function (item) {
+            return item.substr(0, 2) === '--' && item.indexOf(arg) > -1;
+        }));
     };
     Utils.merge = function (obj1, obj2) {
         var obj3 = {};
