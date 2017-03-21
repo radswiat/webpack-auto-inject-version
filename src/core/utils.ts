@@ -1,7 +1,9 @@
 class Utils{
 
     static isArgv(arg) {
-        return process.argv.indexOf(`--${arg}`) >= 0 ? true : false;
+        return Boolean(process.argv.find(function(item) {
+            return item.substr(0, 2) === '--' && item.indexOf(arg) > -1;
+        }));
     }
 
     /**
