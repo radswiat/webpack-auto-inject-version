@@ -33,15 +33,15 @@ var InjectAsComment = (function () {
         return new Promise(function (resolve, reject) { resolve(); });
     };
     InjectAsComment.prototype.injectIntoCss = function (asset) {
-        var modAsset = "/** [" + config.SHORT + "] Build version: " + this.context.version + " **/ " + endOfLine + " " + asset.source() + " ";
+        var modAsset = "/** [" + config.SHORT + "] Build version: " + this.context.version + " **/" + endOfLine + asset.source();
         asset.source = function () { return modAsset; };
     };
     InjectAsComment.prototype.injectIntoHtml = function (asset) {
-        var modAsset = "<!-- [" + config.SHORT + "] Build version: " + this.context.version + " --> " + endOfLine + " " + asset.source() + " ";
+        var modAsset = "<!-- [" + config.SHORT + "] Build version: " + this.context.version + " -->" + endOfLine + asset.source();
         asset.source = function () { return modAsset; };
     };
     InjectAsComment.prototype.injectIntoJs = function (asset) {
-        var modAsset = "// [" + config.SHORT + "] Build version: " + this.context.version + " " + endOfLine + " " + asset.source() + " ";
+        var modAsset = "// [" + config.SHORT + "] Build version: " + this.context.version + endOfLine + " " + asset.source();
         asset.source = function () { return modAsset; };
     };
     return InjectAsComment;
