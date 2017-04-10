@@ -2,32 +2,45 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import config from 'config';
-import u from 'core/utils';
 import log from 'core/log';
+import { merge, transform } from 'lodash';
+
+// import sub components
+import AutoIncreaseVersion from 'components/auto-increase-version';
+import InjectAsComment from 'components/inject-as-comment';
+import InjectByTag from 'components/inject-by-tag';
 
 export default class WebpackAutoInject{
 
-  /**
-   * Default options
-   */
-  static options = {
-    autoIncrease: true,
-    injectAsComment: true,
-    injectByTag: true,
-    injectByTagFileRegex: /^index\.html$/
+  static protectedConfig = {
+    NAME: 'Auto Inject Version',
+    SHORT: 'AIV',
   };
 
   /**
    * Constructor,
    * called on webpack config load
-   * @param options
+   * @param userConfig - config from the webpack config file
    */
-  constructor(options) {
-    this.options = u.merge(WebpackAutoInject.options, options);
-    let packageFile = JSON.parse(fs.readFileSync(path.normalize(config.PATH_PACKAGE), 'utf8'));
+  constructor(userConfig) {
+    this.setConfig(userConfig);
+    let packageFile = JSON.parse(
+      fs.readFileSync(path.resolve(this.config.PACKAGE_JSON_PATH), 'utf8')
+    );
     this.version = packageFile.version;
     log.call('info', 'AIS_START');
     this.executeNoneWebpackComponents();
+  }
+
+  setConfig(userConfig) {
+    this.config = merge(config, userConfig);
+
+    // lets convert all components names to lowercase - to prevent issues
+    this.config.components = transform(this.config.components, function (result, val, key) {
+      result[key.toLowerCase()] = val;
+    });
+
+    this.config = merge(this.config, WebpackAutoInject.protectedConfig);
   }
 
   /**
@@ -36,9 +49,9 @@ export default class WebpackAutoInject{
    * plugin has been called by webpack
    * @param compiler
    */
-  apply(compiler) {
+  async apply(compiler) {
     this.compiler = compiler;
-    this.executeWebpackComponents();
+    await this.executeWebpackComponents();
   }
 
   /**
@@ -46,9 +59,8 @@ export default class WebpackAutoInject{
    * - runs as soon as possible,
    *   > without waiting for webpack init
    */
-  executeNoneWebpackComponents() {
-    this.executeComponents(config.NON_WEBPACK_COMPONENTS, () => {
-    });
+  async executeNoneWebpackComponents() {
+    await this.executeComponent([AutoIncreaseVersion]);
   }
 
   /**
@@ -56,9 +68,8 @@ export default class WebpackAutoInject{
    * - runs when webpack is initialized
    *   and plugins is called by webpack
    */
-  executeWebpackComponents() {
-    this.executeComponents(config.WEBPACK_COMPONENTS, () => {
-    });
+  async executeWebpackComponents() {
+    await this.executeComponent([InjectAsComment, InjectByTag]);
   }
 
   /**
@@ -66,25 +77,30 @@ export default class WebpackAutoInject{
    * - general layer for comp execution
    * - used for both, webpack and non webpack comp
    */
-  executeComponents(components, done) {
+  async executeComponent(components) {
 
     // no more components,
     // finish
-    if(!components.length) { done(); return;}
+    if(!components.length) {
+      return;
+    }
 
-    // take first component
-    let comp = components.shift();
+    // take first component class
+    let ComponentClass = components.shift();
 
     // if component is disabled, call next component
-    if(!this.options[comp.option]) {
-      this.executeComponents(components, done);
+    if (!this.config.components[ComponentClass.componentName.toLowerCase()]) {
+      await this.executeComponent(components);
       return;
     }
 
     // execute component
-    let inst = new (require(comp.path))(this);
-    inst.apply().then(() => {
-      this.executeComponents(components, done);
-    }, (err) => {this.executeComponents(components, done);})
+    let inst = new ComponentClass(this);
+
+    // await for apply to finish
+    await inst.apply();
+
+    // call next tick
+    await this.executeComponent(components);
   }
 }

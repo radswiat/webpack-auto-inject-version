@@ -1,3 +1,50 @@
-/**
- * Created by 608234548 on 10/04/2017.
- */
+var path = require('path');
+// Require WebpackAutoInject from npm installed modules ( prefered )
+// var WebpackAutoInject = require('webpack-auto-inject-version').default;
+// Require WebpackAutoInject from dist - dev purpose only ( do not use the below line )
+var WebpackAutoInject = require('../dist/WebpackAutoInjectVersion').default;
+
+module.exports = {
+  entry: {
+    index: './src/main.js'
+  },
+  resolve: {
+    extensions: ['.js', '.html']
+  },
+  output: {
+    filename: '[name]-bundle.js',
+    path: path.resolve(process.cwd(), 'dist')
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        include: [
+          path.resolve('src')
+        ]
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
+      {
+        test: /\.txt$/,
+        loader: 'raw-loader'
+      },
+      {
+        test: /\.html$/,
+        loader: 'raw-loader!html-minify-loader'
+      }
+    ]
+  },
+  plugins: [
+    new WebpackAutoInject({
+      PACKAGE_JSON_PATH: '../package.json',
+      components: {
+        AutoIncreaseVersion: true,
+        InjectAsComment: true,
+        InjectByTag: true
+      }
+    })
+  ]
+};

@@ -9,7 +9,8 @@
       "root": ["./src/"],
        "alias": {
          "config": "./config",
-         "core": "./core"
+         "core": "./core",
+         "components": "./components"
        }
     }],
     "transform-runtime"

@@ -5,17 +5,14 @@ import nodeExternals from 'webpack-node-externals';
 export default {
   target: 'node',
   externals: [nodeExternals()],
-  entry: {
-    index: [
-      './src/main.js'
-    ]
-  },
+  entry: './src/main.js',
   resolve: {
     extensions: ['.js']
   },
   output: {
-    filename: '[name]-bundle.js',
-    path: path.resolve(process.cwd(), 'dist')
+    filename: 'WebpackAutoInjectVersion.js',
+    path: path.resolve(process.cwd(), 'dist'),
+    libraryTarget: 'umd'
   },
   module: {
     // rules: [

@@ -1,8 +1,7 @@
 import config from 'config';
 import chalk from 'chalk';
-import utils from 'core/utils';
+import { isArgv } from 'core/utils';
 const endOfLine = require('os').EOL;
-
 
 class Log{
 
@@ -13,9 +12,9 @@ class Log{
   }
 
   getLogLevel() {
-    if(u.isArgv('aiv-log-full')){
+    if(isArgv('aiv-log-full')){
       this.logLevel = 3;
-    }else if(u.isArgv('aiv-log-none')) {
+    }else if(isArgv('aiv-log-none')) {
       this.logLevel = 0;
     }
   }
