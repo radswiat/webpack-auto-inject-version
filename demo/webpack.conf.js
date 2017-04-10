@@ -1,5 +1,5 @@
 var path = require('path');
-// Require WebpackAutoInject from npm installed modules ( prefered )
+// Require WebpackAutoInject from npm installed modules ( preferred )
 // var WebpackAutoInject = require('webpack-auto-inject-version').default;
 // Require WebpackAutoInject from dist - dev purpose only ( do not use the below line )
 var WebpackAutoInject = require('../dist/WebpackAutoInjectVersion').default;

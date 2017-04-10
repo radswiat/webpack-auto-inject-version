@@ -632,22 +632,15 @@ var InjectByTag = function () {
     value: function apply() {
       var _this = this;
 
-      console.log('------------------- INJECT BY TAG! ------------------');
       this.context.compiler.plugin('emit', function (compilation, cb) {
-        console.log('------------------- INJECT BY TAG! APPLY! ------------------');
-        console.log(compilation.assets);
         // for every output file
         for (var basename in compilation.assets) {
-          console.log(_chalk2.default.green.bold('================='));
-          console.log(basename);
           // only if match regex
-          console.log(basename + ' is: ' + _this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename));
           if (_this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename)) {
             (function () {
               var replaced = 0;
               var asset = compilation.assets[basename];
               var modFile = asset.source().replace(/(\[AIV\]{version}\[\/AIV\])/g, function () {
-                console.log('replace?!');
                 replaced++;
                 return _this.context.version;
               });
