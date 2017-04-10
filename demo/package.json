@@ -1,0 +1,18 @@
+{
+  "name": "example-using-inject",
+  "version": "0.13.4",
+  "description": "This is an example how to use webpack-auto-inject-version plugin in webpack",
+  "scripts": {
+    "start": "webpack --config ./webpack.conf.js",
+    "patch": "webpack --config ./webpack.conf.js --env.patch",
+    "minor": "webpack --config ./webpack.conf.js --env.minor",
+    "major": "webpack --config ./webpack.conf.js --env.major"
+  },
+  "author": "Radoslaw Swiat",
+  "license": "ISC",
+  "devDependencies": {
+    "html-minify-loader": "^1.1.0",
+    "raw-loader": "^0.5.1",
+    "webpack": "^2.3.3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "babelrc": false,
+  "presets": [
+    "es2015",
+    "stage-2"
+  ],
+  "plugins": [
+    ["module-resolver", {
+      "root": ["./src/"],
+       "alias": {
+         "config": "./config",
+         "core": "./core",
+         "components": "./components"
+       }
+    }],
+    "transform-runtime"
+  ]
+}
