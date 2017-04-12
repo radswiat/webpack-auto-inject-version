@@ -643,22 +643,32 @@ var InjectByTag = function () {
         for (var basename in compilation.assets) {
           // only if match regex
           if (_this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename)) {
-            (function () {
+            var _ret = function () {
               var replaced = 0;
               var asset = compilation.assets[basename];
-              var modFile = asset.source().replace(/(\[AIV\]{version}\[\/AIV\])/g, function () {
+
+              var originalSource = asset.source();
+              if (!originalSource || typeof originalSource.replace !== 'function') {
+                return 'continue';
+              }
+
+              var modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, function () {
                 replaced++;
                 return _this.context.version;
               });
+
               asset.source = function () {
                 return modFile;
               };
               _log2.default.info('InjectByTag : match : ' + basename + ' : replaced : ' + replaced);
-            })();
+            }();
+
+            if (_ret === 'continue') continue;
           }
         }
         cb();
       });
+
       return new _promise2.default(function (resolve, reject) {
         resolve();
       });
