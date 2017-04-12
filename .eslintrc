@@ -1,0 +1,72 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+  },
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "classes": true,
+    "defaultParams": true,
+    "destructuring": true,
+    "jsx": true,
+    "modules": true,
+    "objectLiteralComputedProperties": true,
+    "objectLiteralShorthandMethods": true,
+    "objectLiteralShorthandProperties": true,
+    "spread": true,
+    "templateStrings": true
+  },
+  "globals": {
+    "__DEV__": true,
+    "describe": true,
+    "it": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "expect": true,
+    "browser": true,
+    "by": true,
+    "element": true,
+    "jasmine": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "no-unneeded-ternary" : "off",
+    "object-curly-spacing": ["error", "always", {
+      "objectsInObjects": false,
+      "arraysInObjects": false
+    }],
+    "comma-dangle": ["error", "never"],
+    "max-len": ["error", 100, 4, {"ignoreUrls": true}],
+    "space-before-function-paren": ["error", "never"],
+    "no-multiple-empty-lines": ["error", {max: 1}],
+    "no-use-before-define": 0,
+    "global-require": 0,
+    "no-else-return": "error",
+    "no-param-reassign": 0,
+    "prefer-const": 0,
+    "func-names": 0,
+    "arrow-body-style": 0,
+    "react/jsx-no-bind": [2, {
+      "ignoreRefs": false,
+      "allowArrowFunctions": true,
+      "allowBind": true
+    }],
+    "guard-for-in": 0,
+    "react/jsx-key": 2,
+    "react/jsx-no-undef": 0,
+    "react/prefer-stateless-function": 0,
+    "react/jsx-closing-bracket-location": 0,
+    "no-undef": "error",
+    "one-var": 0,
+    "no-extra-semi": "error",
+    "semi": "error",
+    "prefer-arrow-callback": "error",
+    "new-cap":  "off"
+  }
+}

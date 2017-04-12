@@ -4993,7 +4993,7 @@ module.exports = require("os");
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+var __WEBPACK_AMD_DEFINE_RESULT__;
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -5259,6 +5259,12 @@ WebpackAutoInject.protectedConfig = {
   SHORT: 'AIV'
 };
 exports.default = WebpackAutoInject;
+
+
+!(__WEBPACK_AMD_DEFINE_RESULT__ = function (Foo) {
+  return WebpackAutoInject;
+}.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
 /* 158 */

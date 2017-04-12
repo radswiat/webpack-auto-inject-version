@@ -104,3 +104,10 @@ export default class WebpackAutoInject{
     await this.executeComponent(components);
   }
 }
+
+// webpack hack to export class directly,
+// - instead of using 'new WebpackAutoInject.default()',
+// - with this you can just use WebpackAutoInject();
+define(() => {
+  return WebpackAutoInject;
+});
