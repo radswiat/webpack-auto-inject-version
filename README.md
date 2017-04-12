@@ -8,10 +8,10 @@ $ npm install webpack-auto-inject-version --save-dev
 ```
 
 # Table of Contents
-[What it does](#What-it-does) <br>
-[How to use](#How-to-use) <br>
-[Available options](#Available-options) <br>
-[Examples of the plugin outputs](#Examples-of-the-plugin-outputs)
+[What it does](#user-content-what-it-does) <br>
+[How to use](#user-content-how-to-use) <br>
+[Available options](#user-content-available-options) <br>
+[Output examples](#user-content-output-examples)
 
 
 
@@ -86,7 +86,7 @@ Default: true
 
 
 
-# Examples of the plugin outputs
+# Output-examples
 AIV can inject version number for all your bundle files (css,js,html).<br><br>
 ```js
 // [AIV] Build version: 1.0.10
