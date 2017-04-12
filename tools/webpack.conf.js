@@ -1,10 +1,7 @@
 import path from 'path';
-const webpack = require('webpack');
-// import nodeExternals from 'webpack-node-externals';
 
 export default {
   target: 'node',
-  // externals: [nodeExternals()],
   entry: ['babel-polyfill', './src/main.js'],
   resolve: {
     extensions: ['.js']
@@ -26,7 +23,10 @@ export default {
     loaders: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        use: [
+          'babel-loader',
+          'eslint-loader'
+        ],
         include: [
           path.resolve('src')
         ]

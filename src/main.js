@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+/* global define */
 import fs from 'fs';
 import path from 'path';
 import config from 'config';
@@ -10,11 +10,15 @@ import AutoIncreaseVersion from 'components/auto-increase-version';
 import InjectAsComment from 'components/inject-as-comment';
 import InjectByTag from 'components/inject-by-tag';
 
-export default class WebpackAutoInject{
+export default class WebpackAutoInject {
 
+  /**
+   * Protected config
+   * @type {{NAME: string, SHORT: string}}
+   */
   static protectedConfig = {
     NAME: 'Auto Inject Version',
-    SHORT: 'AIV',
+    SHORT: 'AIV'
   };
 
   /**
@@ -32,11 +36,17 @@ export default class WebpackAutoInject{
     this.executeNoneWebpackComponents();
   }
 
+  /**
+   * Set config
+   * - merge userConfig with default config
+   * - merge above with a protected config
+   * @param userConfig
+   */
   setConfig(userConfig) {
     this.config = merge(config, userConfig);
 
     // lets convert all components names to lowercase - to prevent issues
-    this.config.components = transform(this.config.components, function (result, val, key) {
+    this.config.components = transform(this.config.components, (result, val, key) => {
       result[key.toLowerCase()] = val;
     });
 
@@ -48,6 +58,7 @@ export default class WebpackAutoInject{
    * when webpack is initialized and
    * plugin has been called by webpack
    * @param compiler
+   * @protected
    */
   async apply(compiler) {
     this.compiler = compiler;
@@ -78,10 +89,9 @@ export default class WebpackAutoInject{
    * - used for both, webpack and non webpack comp
    */
   async executeComponent(components) {
-
     // no more components,
     // finish
-    if(!components.length) {
+    if (!components.length) {
       return;
     }
 

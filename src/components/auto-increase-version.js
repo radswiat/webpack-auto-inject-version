@@ -1,12 +1,10 @@
 import semver from 'semver';
-import config from 'config';
 import path from 'path';
 import fs from 'fs';
 import { isArgv } from 'core/utils';
-import chalk from 'chalk';
 import log from 'core/log';
 
-export default class AutoIncreaseVersion{
+export default class AutoIncreaseVersion {
 
   static componentName = 'AutoIncreaseVersion';
 
@@ -14,6 +12,11 @@ export default class AutoIncreaseVersion{
     this.context = context;
   }
 
+  /**
+   * Apply will be called from main class
+   * @protected
+   * @returns {Promise}
+   */
   apply() {
     return new Promise((resolve, reject) => {
       this.resolve = resolve;
@@ -28,14 +31,13 @@ export default class AutoIncreaseVersion{
    */
   start() {
     this.packageFile = this.openPackageFile();
-    if( isArgv('major') ) {
+    if (isArgv('major')) {
       this.major();
-    }
-    else if( isArgv('minor') ) {
+    } else if (isArgv('minor')) {
       this.minor();
-    }else if( isArgv('patch') ) {
+    } else if (isArgv('patch')) {
       this.patch();
-    }else {
+    } else {
       this.reject();
     }
   }
@@ -56,14 +58,18 @@ export default class AutoIncreaseVersion{
     this.packageFile.version = newVersion;
     fs.writeFile(
       path.resolve(this.context.config.PACKAGE_JSON_PATH),
-      JSON.stringify(this.packageFile, null, 4
-      ), (err) => {
-        if(err) {this.reject(err); return console.log(err);}
+      JSON.stringify(this.packageFile, null, 4), (err) => {
+        if (err) {
+          this.reject(err);
+          console.log(err);
+          return false;
+        }
         log.info(`autoIncVersion : new version : ${newVersion}`);
         log.info('package.json updated!');
         this.context.version = newVersion;
         this.resolve();
-    });
+        return true;
+      });
   }
 
   /**

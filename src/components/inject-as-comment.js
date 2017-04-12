@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import path from 'path';
 import config from 'config';
 import log from 'core/log';
@@ -10,7 +9,7 @@ const endOfLine = require('os').EOL;
  * - done by parsing html file,
  *   > replace: <{version}>
  */
-export default class InjectAsComment{
+export default class InjectAsComment {
 
   static componentName = 'InjectAsComment';
 
@@ -18,12 +17,17 @@ export default class InjectAsComment{
     this.context = context;
   }
 
+  /**
+   * Apply will be called from main class
+   * @protected
+   * @returns {Promise}
+   */
   apply() {
     this.context.compiler.plugin('emit', (compilation, cb) => {
-      for ( var basename in compilation.assets ) {
+      for (let basename in compilation.assets) {
         let ext = path.extname(basename);
         let asset = compilation.assets[basename];
-        switch(ext) {
+        switch (ext) {
           case '.js' :
             this.injectIntoJs(asset);
             break;
@@ -33,27 +37,31 @@ export default class InjectAsComment{
           case '.css' :
             this.injectIntoCss(asset);
             break;
-          case 'default': break;
+          default:
+            break;
         }
         log.info(`InjectAsComment : match : ${basename} : injected : ${this.context.version}`);
       }
       cb();
     });
-    return new Promise((resolve, reject) => { resolve(); })
+    return new Promise((resolve) => { resolve(); });
   }
 
   injectIntoCss(asset) {
-    let modAsset = `/** [${config.SHORT}] Build version: ${this.context.version} **/ ${endOfLine} ${asset.source()} `;
+    let modAsset = `/** [${config.SHORT}] Build version: ${this.context.version} **/ `;
+    modAsset += `${endOfLine} ${asset.source()} `;
     asset.source = () => modAsset;
   }
 
   injectIntoHtml(asset) {
-    let modAsset = `<!-- [${config.SHORT}] Build version: ${this.context.version} --> ${endOfLine} ${asset.source()} `;
+    let modAsset = `<!-- [${config.SHORT}] Build version: ${this.context.version} --> `;
+    modAsset += `${endOfLine} ${asset.source()} `;
     asset.source = () => modAsset;
   }
 
   injectIntoJs(asset) {
-    let modAsset = `// [${config.SHORT}] Build version: ${this.context.version} ${endOfLine} ${asset.source()} `;
+    let modAsset = `// [${config.SHORT}] Build version: ${this.context.version} `;
+    modAsset = `${endOfLine} ${asset.source()} `;
     asset.source = () => modAsset;
   }
 }

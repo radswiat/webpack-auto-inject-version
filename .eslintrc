@@ -37,6 +37,7 @@
   ],
   "rules": {
     "no-unneeded-ternary" : "off",
+    "no-console": "off",
     "object-curly-spacing": ["error", "always", {
       "objectsInObjects": false,
       "arraysInObjects": false
