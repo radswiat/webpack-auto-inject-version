@@ -1,11 +1,11 @@
 import path from 'path';
 const webpack = require('webpack');
-import nodeExternals from 'webpack-node-externals';
+// import nodeExternals from 'webpack-node-externals';
 
 export default {
   target: 'node',
-  externals: [nodeExternals()],
-  entry: './src/main.js',
+  // externals: [nodeExternals()],
+  entry: ['babel-polyfill', './src/main.js'],
   resolve: {
     extensions: ['.js']
   },
