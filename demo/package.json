@@ -14,5 +14,8 @@
     "html-minify-loader": "^1.1.0",
     "raw-loader": "^0.5.1",
     "webpack": "^2.3.3"
+  },
+  "dependencies": {
+    "webpack-auto-inject-version": "^0.5.1"
   }
 }

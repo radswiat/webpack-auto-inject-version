@@ -273,6 +273,12 @@ var argv = __webpack_require__(18).argv;
  * @returns {boolean}
  */
 function isArgv(arg) {
+  if (typeof argv.env === 'undefined') {
+    return false;
+  }
+  if (typeof argv.env[arg] === 'undefined') {
+    return false;
+  }
   return Boolean(argv.env[arg]);
 }
 
