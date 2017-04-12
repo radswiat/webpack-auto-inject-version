@@ -1,4 +1,4 @@
-// [AIV] Build version: 0.13.4 
+// [AIV]  Build version: 0.13.4 - Wednesday, April 12th, 2017, 11:34:31 PM  
  /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -64,20 +64,14 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>My awesome project | 0.13.4></span></body></html>"
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var html = __webpack_require__(0);
+var html = __webpack_require__(1);
 
 /**
  * Sample code
@@ -88,6 +82,19 @@ var test = function(val) {
   return val * val;
 };
 test(myVariable);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>My awesome project | 0.13.4></span></body></html>"
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(0);
 
 
 /***/ })

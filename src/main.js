@@ -6,9 +6,9 @@ import log from 'core/log';
 import { merge, transform } from 'lodash';
 
 // import sub components
-import AutoIncreaseVersion from 'components/auto-increase-version';
-import InjectAsComment from 'components/inject-as-comment';
-import InjectByTag from 'components/inject-by-tag';
+import AutoIncreaseVersion from 'components/auto-increase-version/auto-increase-version';
+import InjectAsComment from 'components/inject-as-comment/inject-as-comment';
+import InjectByTag from 'components/inject-by-tag/inject-by-tag';
 
 export default class WebpackAutoInject {
 

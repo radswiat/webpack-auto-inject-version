@@ -6,6 +6,9 @@ export default {
     InjectByTag: true
   },
   componentsOptions: {
+    InjectAsComment: {
+      tag: 'Build version: {version} - {date}'
+    },
     InjectByTag: {
       fileRegex: /\.+/
     }

@@ -1,12 +1,12 @@
 var path = require('path');
 // Require WebpackAutoInject from npm installed modules ( preferred )
-var WebpackAutoInject = require('webpack-auto-inject-version');
+// var WebpackAutoInject = require('webpack-auto-inject-version');
 // Require WebpackAutoInject from dist - dev purpose only ( do not use the below line )
-// var WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
+var WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
 
 module.exports = {
   entry: {
-    index: './src/main.js'
+    index: ['./src/main.js']
   },
   resolve: {
     extensions: ['.js', '.html']

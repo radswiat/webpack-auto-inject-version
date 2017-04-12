@@ -1,6 +1,8 @@
 import path from 'path';
 import config from 'config';
 import log from 'core/log';
+import tags from './tags';
+import chalk from 'chalk';
 
 const endOfLine = require('os').EOL;
 
@@ -29,12 +31,15 @@ export default class InjectAsComment {
         let asset = compilation.assets[basename];
         switch (ext) {
           case '.js' :
+            console.log(chalk.blue.bold('js'));
             this.injectIntoJs(asset);
             break;
           case '.html' :
+            console.log(chalk.blue.bold('html'));
             this.injectIntoHtml(asset);
             break;
           case '.css' :
+            console.log(chalk.blue.bold('css'));
             this.injectIntoCss(asset);
             break;
           default:
@@ -47,21 +52,34 @@ export default class InjectAsComment {
     return new Promise((resolve) => { resolve(); });
   }
 
+  parseTags(baseOpen, baseClose) {
+    let tagPattern = this.context.config.componentsOptions.InjectAsComment.tag;
+    tagPattern = tagPattern.replace(/(\{([a-zA-Z]+)\})/g, (tag) => {
+      let tagName = tag.replace(/(\{|\})/g, '');
+      if (typeof tags[tagName] === 'function') {
+        return tags[tagName](this.context);
+      }
+      log.error(`unsupported tag in componentsOptions.InjectAsComment.tag [${tagName}]`);
+      return tag;
+    });
+    return `${baseOpen} ${tagPattern} ${baseClose}`;
+  }
+
   injectIntoCss(asset) {
-    let modAsset = `/** [${config.SHORT}] Build version: ${this.context.version} **/ `;
+    let modAsset = this.parseTags(`/** [${config.SHORT}] `, ' **/ ');
     modAsset += `${endOfLine} ${asset.source()} `;
     asset.source = () => modAsset;
   }
 
   injectIntoHtml(asset) {
-    let modAsset = `<!-- [${config.SHORT}] Build version: ${this.context.version} --> `;
+    let modAsset = this.parseTags(`<!-- [${config.SHORT}] `, ' --> ');
     modAsset += `${endOfLine} ${asset.source()} `;
     asset.source = () => modAsset;
   }
 
   injectIntoJs(asset) {
-    let modAsset = `// [${config.SHORT}] Build version: ${this.context.version} `;
-    modAsset = `${endOfLine} ${asset.source()} `;
+    let modAsset = this.parseTags(`// [${config.SHORT}] `, ' ');
+    modAsset += `${endOfLine} ${asset.source()} `;
     asset.source = () => modAsset;
   }
 }

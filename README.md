@@ -12,7 +12,7 @@ $ npm install webpack-auto-inject-version --save-dev
 [How to use](#user-content-how-to-use) <br>
 [Available options](#user-content-available-options) <br>
 [Output examples](#user-content-output-examples)
-
+[Change log](#user-content-change-log)
 
 
 
@@ -81,8 +81,30 @@ Default: true
 
 ### components.InjectAsComment
 This will inject your version as a comment into any css,js,html file.<br>
+You can change what is injected into the file by changing componentsOptions.InjectAsComment.tag.
+Currently only 2 tags are supported:
+* {version}
+* {date} ( current date )
+Example:
+``` javascript
+  ...
+  plugins: [
+    ...
+    new WebpackAutoInject({
+      PACKAGE_JSON_PATH: './package.json',
+      components: {
+        ...
+        InjectAsComment: true
+      },
+      componentsOptions: {
+        ...
+        InjectAsComment: {
+          tag: 'Build version: {version} - {date}' // default
+        }
+    })
+  ]
+```  
 Default: true
-
 
 
 
@@ -103,3 +125,11 @@ Example html:
 ```
 
 
+
+# Change log
+## [0.5.13] - 12/04/2017
+- Tag from InjectAsComment can now be configured by options ( componentsOptions.InjectAsComment.tag )
+- Default tag template for InjectAsComment has change
+## [0.5.12] - 12/04/2017
+- Fix dependency missing issue
+- Remove export as object with .default as a class
