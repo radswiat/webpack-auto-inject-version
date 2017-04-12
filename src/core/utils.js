@@ -9,6 +9,12 @@ let argv = require('optimist').argv;
  * @returns {boolean}
  */
 export function isArgv(arg) {
+  if (typeof argv.env === 'undefined') {
+    return false;
+  }
+  if (typeof argv.env[arg] === 'undefined') {
+    return false;
+  }
   return Boolean(argv.env[arg]);
 }
 
