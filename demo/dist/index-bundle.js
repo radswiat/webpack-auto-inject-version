@@ -1,4 +1,4 @@
-// [AIV] Build version: 0.5.2 
+// [AIV] Build version: 0.6.0 
  /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -71,7 +71,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>My awesome project | 0.5.2></span></body></html>"
+module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>My awesome project | 0.6.0></span></body></html>"
 
 /***/ }),
 /* 1 */

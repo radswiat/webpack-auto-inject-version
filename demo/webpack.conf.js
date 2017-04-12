@@ -39,7 +39,7 @@ module.exports = {
   },
   plugins: [
     new WebpackAutoInject({
-      PACKAGE_JSON_PATH: '../package.json',
+      PACKAGE_JSON_PATH: './package.json',
       components: {
         AutoIncreaseVersion: true,
         InjectAsComment: true,
