@@ -21,16 +21,24 @@ export default class InjectByTag{
         if(this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename)) {
           let replaced = 0;
           let asset = compilation.assets[basename];
-          let modFile = asset.source().replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
+
+          const originalSource = asset.source();
+          if (!originalSource || typeof originalSource.replace !== 'function') {
+            continue;
+          }
+
+          let modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
             replaced++;
             return this.context.version;
           });
+
           asset.source = () => modFile;
           log.info(`InjectByTag : match : ${basename} : replaced : ${replaced}`);
         }
       }
       cb();
     });
+
     return new Promise((resolve, reject) => { resolve(); })
   }
 }
