@@ -8,9 +8,9 @@ $ npm install webpack-auto-inject-version --save-dev
 ```
 
 # Table of Contents
-[What it does](#What-it-does)
-[How to use](#How-to-use)
-[Available options](#Available-options)
+[What it does](#What-it-does) <br>
+[How to use](#How-to-use) <br>
+[Available options](#Available-options) <br>
 [Examples of the plugin outputs](#Examples-of-the-plugin-outputs)
 
 
