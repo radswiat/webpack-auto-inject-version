@@ -37,7 +37,7 @@ Example html:
 # How to configure
 In webpack.conf.js ( or any name of webpack conf file )
 ```js
-var WebpackAutoInject = require('webpack-auto-inject-version');
+var WebpackAutoInject = require('webpack-auto-inject-version').default;
 
 module.exports = {
     plugins: [
