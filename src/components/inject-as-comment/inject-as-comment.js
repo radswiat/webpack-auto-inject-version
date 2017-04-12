@@ -31,15 +31,12 @@ export default class InjectAsComment {
         let asset = compilation.assets[basename];
         switch (ext) {
           case '.js' :
-            console.log(chalk.blue.bold('js'));
             this.injectIntoJs(asset);
             break;
           case '.html' :
-            console.log(chalk.blue.bold('html'));
             this.injectIntoHtml(asset);
             break;
           case '.css' :
-            console.log(chalk.blue.bold('css'));
             this.injectIntoCss(asset);
             break;
           default:
