@@ -2,7 +2,6 @@ import path from 'path';
 import config from 'config';
 import log from 'core/log';
 import tags from './tags';
-import chalk from 'chalk';
 
 const endOfLine = require('os').EOL;
 

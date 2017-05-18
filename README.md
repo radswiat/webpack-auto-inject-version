@@ -127,6 +127,8 @@ Example html:
 
 
 # Change log
+## [0.5.14] - 12/04/2017
+- Remove babel polyfills from webpack build as it was causing issues if babel was already used in project
 ## [0.5.13] - 12/04/2017
 - Tag from InjectAsComment can now be configured by options ( componentsOptions.InjectAsComment.tag )
 - Default tag template for InjectAsComment has change

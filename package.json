@@ -1,6 +1,6 @@
 {
   "name": "webpack-auto-inject-version",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "repository": "radswiat/webpack-auto-inject-version",
   "description": "Webpack plugin for auto inject version from package.json",
   "main": "dist/WebpackAutoInjectVersion.js",

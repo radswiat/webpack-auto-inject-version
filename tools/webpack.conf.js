@@ -2,7 +2,7 @@ import path from 'path';
 
 export default {
   target: 'node',
-  entry: ['babel-polyfill', './src/main.js'],
+  entry: ['./src/main.js'],
   resolve: {
     extensions: ['.js']
   },
