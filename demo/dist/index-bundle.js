@@ -1,4 +1,4 @@
-// [AIV]  Build version: 0.13.4 - Wednesday, April 12th, 2017, 11:34:31 PM  
+// [AIV]  Version: 0.13.36 - Friday, August 25th, 2017, 1:56:17 PM  
  /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -7,9 +7,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -88,7 +88,7 @@ test(myVariable);
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>My awesome project | 0.13.4></span></body></html>"
+module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>0.13.36</span> <span>Friday, August 25th, 2017, 1:56:17 PM</span> <span>0.13.36_Friday, August 25th, 2017, 1:56:17 PM</span> <span>V:0.13.36 Date:Friday, August 25th, 2017, 1:56:17 PM</span></body></html>"
 
 /***/ }),
 /* 2 */

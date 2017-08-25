@@ -12,14 +12,6 @@ export default {
     libraryTarget: 'umd'
   },
   module: {
-    // rules: [
-    //   {   // eslint feature
-    //     enforce: 'pre',
-    //     test: /\.js$/,
-    //     loader: 'eslint-loader',
-    //     exclude: /node_modules/
-    //   }
-    // ],
     loaders: [
       {
         test: /\.js$/,

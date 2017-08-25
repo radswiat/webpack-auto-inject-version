@@ -1,4 +1,7 @@
 export default {
+  NAME: 'Auto Inject Version',
+  SHORT: 'AIV',
+  SILENT: false,
   PACKAGE_JSON_PATH: './package.json',
   components: {
     AutoIncreaseVersion: true,
@@ -6,11 +9,16 @@ export default {
     InjectByTag: true
   },
   componentsOptions: {
+    AutoIncreaseVersion: {
+      runInWatchMode: false
+    },
     InjectAsComment: {
-      tag: 'Build version: {version} - {date}'
+      tag: 'Build version: {version} - {date}',
+      dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT'
     },
     InjectByTag: {
-      fileRegex: /\.+/
+      fileRegex: /\.+/,
+      dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT'
     }
   },
   LOGS_TEXT: {

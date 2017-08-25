@@ -13,15 +13,6 @@ import InjectByTag from 'components/inject-by-tag/inject-by-tag';
 export default class WebpackAutoInject {
 
   /**
-   * Protected config
-   * @type {{NAME: string, SHORT: string}}
-   */
-  static protectedConfig = {
-    NAME: 'Auto Inject Version',
-    SHORT: 'AIV'
-  };
-
-  /**
    * Constructor,
    * called on webpack config load
    * @param userConfig - config from the webpack config file
@@ -49,8 +40,6 @@ export default class WebpackAutoInject {
     this.config.components = transform(this.config.components, (result, val, key) => {
       result[key.toLowerCase()] = val;
     });
-
-    this.config = merge(this.config, WebpackAutoInject.protectedConfig);
   }
 
   /**
@@ -80,6 +69,9 @@ export default class WebpackAutoInject {
    *   and plugins is called by webpack
    */
   async executeWebpackComponents() {
+    if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
+      await this.executeComponent([AutoIncreaseVersion]);
+    }
     await this.executeComponent([InjectAsComment, InjectByTag]);
   }
 

@@ -5,6 +5,7 @@ var path = require('path');
 var WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
 
 module.exports = {
+  watch: true,
   entry: {
     index: ['./src/main.js']
   },
@@ -39,11 +40,21 @@ module.exports = {
   },
   plugins: [
     new WebpackAutoInject({
-      PACKAGE_JSON_PATH: './package.json',
       components: {
         AutoIncreaseVersion: true,
         InjectAsComment: true,
         InjectByTag: true
+      },
+      componentsOptions: {
+        AutoIncreaseVersion: {
+          runInWatchMode: false // it will increase version with every single build!
+        },
+        InjectAsComment: {
+          tag: 'Version: {version} - {date}'
+        },
+        InjectByTag: {
+          fileRegex: /\.+/
+        }
       }
     })
   ]

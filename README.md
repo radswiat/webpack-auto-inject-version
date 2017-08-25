@@ -31,7 +31,7 @@ It's easy to set it up, all you need is:
 * use WebpackAutoInject in webpack plugins  
 * pass config as a parameter, or leave it blank as all options are "on" by default.
 
-### Example ( in webpack.conf.js )
+### Simple config example ( in webpack.conf.js )
 ```js
 var WebpackAutoInject = require('webpack-auto-inject-version');
 ...
@@ -49,7 +49,59 @@ module.exports = {
 }
 ```
 
+### Full config example ( in webpack.conf.js )
+```
+module.exports = {
+    ...
+    plugins: [
+      new WebpackAutoInject({
+        NAME: 'AIV custom name',
+        SHORT: 'CUSTOM',
+        SILENT: false,
+        PACKAGE_JSON_PATH: './package.json',
+        components: {
+          AutoIncreaseVersion: true,
+          InjectAsComment: true,
+          InjectByTag: true
+        },
+        componentsOptions: {
+          AutoIncreaseVersion: {
+            runInWatchMode: false // it will increase version with every single build!
+          },
+          InjectAsComment: {
+            tag: 'Version: {version} - {date}',
+            dateFormat: 'h:MM:ss TT'
+          },
+          InjectByTag: {
+            fileRegex: /\.+/,
+            dateFormat: 'h:MM:ss TT'
+          }
+        },
+        LOGS_TEXT: {
+          AIS_START: 'DEMO AIV started'
+        }
+      })
+    ]
+}
+```
 
+### Inject by tag example
+```
+<body>
+  <span>
+    [AIV]{version}[/AIV]
+  </span>
+  <span>
+    [AIV]{date}[/AIV]
+  </span>
+  <span>
+    [AIV]{version}_{date}[/AIV]
+  </span>
+  <span>
+    [AIV]V:{version} Date:{date}[/AIV]
+  </span>
+</body>
+```
 
 # Available options
 
@@ -65,6 +117,24 @@ Example for package.json run type, npm run start => ( 1.2.10 to 2.0.0 )
  "scripts": {
     "start": "webpack --env.major"
  }
+```
+
+To enable watch mode:
+```
+  plugins: [
+    new WebpackAutoInject({
+      ...
+      components: {
+        AutoIncreaseVersion: true,
+        ...
+      },
+      componentsOptions: {
+        AutoIncreaseVersion: {
+          runInWatchMode: false // it will increase version with every single build!
+        }
+      }
+    })
+  ]
 ```
 Default: true
 
@@ -99,7 +169,8 @@ Example:
       componentsOptions: {
         ...
         InjectAsComment: {
-          tag: 'Build version: {version} - {date}' // default
+          tag: 'Build version: {version} - {date}', // default
+          dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT' // default
         }
     })
   ]
@@ -127,6 +198,12 @@ Example html:
 
 
 # Change log
+## [1.0.0] - 25/08/2017
+- Date format can now be specified for InjectAsComment
+- Date format can now be specified for InjectByTag
+- Webpack WATCH support added
+- Root SILENT option added
+- Minor fixes
 ## [0.5.14] - 12/04/2017
 - Remove babel polyfills from webpack build as it was causing issues if babel was already used in project
 ## [0.5.13] - 12/04/2017

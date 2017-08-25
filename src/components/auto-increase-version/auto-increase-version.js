@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { isArgv } from 'core/utils';
 import log from 'core/log';
+import config from 'config';
 
 export default class AutoIncreaseVersion {
 
@@ -18,6 +19,23 @@ export default class AutoIncreaseVersion {
    * @returns {Promise}
    */
   apply() {
+    // when runInWatchMode
+    // we have to register AutoIncreaseVersion instead of firing it straight away
+    if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
+      if (this.context.compiler) {
+        this.context.compiler.plugin('emit', async (compilation, cb) => {
+          await new Promise((resolve, reject) => {
+            this.resolve = resolve;
+            this.reject = reject;
+            this.start();
+          });
+          cb();
+        });
+      }
+      return null;
+    }
+
+    // when runInWatchMode is off
     return new Promise((resolve, reject) => {
       this.resolve = resolve;
       this.reject = reject;
@@ -31,6 +49,9 @@ export default class AutoIncreaseVersion {
    */
   start() {
     this.packageFile = this.openPackageFile();
+    if (!this.packageFile) {
+      return;
+    }
     if (isArgv('major')) {
       this.major();
     } else if (isArgv('minor')) {
@@ -38,7 +59,7 @@ export default class AutoIncreaseVersion {
     } else if (isArgv('patch')) {
       this.patch();
     } else {
-      this.reject();
+      this.resolve();
     }
   }
 
@@ -47,7 +68,16 @@ export default class AutoIncreaseVersion {
    * @returns {any}
    */
   openPackageFile() {
-    return JSON.parse(fs.readFileSync(path.resolve(this.context.config.PACKAGE_JSON_PATH), 'utf8'));
+    try {
+      return JSON.parse(
+        fs.readFileSync(
+          path.resolve(this.context.config.PACKAGE_JSON_PATH),
+          'utf8'
+        )
+      );
+    } catch (err) {
+      return null;
+    }
   }
 
   /**

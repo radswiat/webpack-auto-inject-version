@@ -46,16 +46,19 @@ class Log {
   }
 
   error(msg) {
+    if (config.SILENT) return;
     if (this.logLevel < 3) return;
     console.log(`${this.getHead()} ${chalk.red('error')} : ${msg}`);
   }
 
   info(msg) {
+    if (config.SILENT) return;
     if (!this.logLevel) return;
     console.log(`${this.getHead()} ${chalk.blue('info')} : ${msg}`);
   }
 
   warn(msg) {
+    if (config.SILENT) return;
     if (!this.logLevel) return;
     console.log(`${this.getHead()} ${chalk.yellow('warn')} : ${msg}`);
   }

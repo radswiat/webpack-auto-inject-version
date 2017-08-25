@@ -1,4 +1,6 @@
+import dateFormat from 'dateformat';
 import log from 'core/log';
+import config from 'config';
 
 /**
  * Inject version number into HTML
@@ -8,6 +10,7 @@ import log from 'core/log';
 export default class InjectByTag {
 
   static componentName = 'InjectByTag';
+  static AIVTagRegexp = /(\[AIV])(([a-zA-Z{} :;!()_@\-"'\\\/])+)(\[\/AIV])/g;
 
   constructor(context) {
     this.context = context;
@@ -32,10 +35,29 @@ export default class InjectByTag {
             continue;
           }
 
-          let modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
+          let modFile = originalSource.replace(InjectByTag.AIVTagRegexp, (tag) => {
+            // handle version
+            tag = tag.replace(/(\{)(version)(\})/g, () => {
+              return this.context.version;
+            });
+
+            // handle date
+            tag = tag.replace(/(\{)(date)(\})/g, () => {
+              return dateFormat(new Date(), config.componentsOptions.InjectByTag.dateFormat);
+            });
+
+            // remove [AIV] and [/AIV]
+            tag = tag.replace(/(\[AIV])|(\[\/AIV])/g, '');
+
             replaced++;
-            return this.context.version;
+
+            return tag;
           });
+
+          // let modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
+          //   replaced++;
+          //   return this.context.version;
+          // });
 
           asset.source = () => modFile;
           log.info(`InjectByTag : match : ${basename} : replaced : ${replaced}`);
