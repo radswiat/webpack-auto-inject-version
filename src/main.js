@@ -49,9 +49,9 @@ export default class WebpackAutoInject {
    * @param compiler
    * @protected
    */
-  async apply(compiler) {
+  apply(compiler) {
     this.compiler = compiler;
-    await this.executeWebpackComponents();
+    this.executeWebpackComponents();
   }
 
   /**
@@ -59,8 +59,8 @@ export default class WebpackAutoInject {
    * - runs as soon as possible,
    *   > without waiting for webpack init
    */
-  async executeNoneWebpackComponents() {
-    await this.executeComponent([AutoIncreaseVersion]);
+  executeNoneWebpackComponents() {
+    this.executeComponent([AutoIncreaseVersion]);
   }
 
   /**
@@ -68,11 +68,11 @@ export default class WebpackAutoInject {
    * - runs when webpack is initialized
    *   and plugins is called by webpack
    */
-  async executeWebpackComponents() {
+  executeWebpackComponents() {
     if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
-      await this.executeComponent([AutoIncreaseVersion]);
+      this.executeComponent([AutoIncreaseVersion]);
     }
-    await this.executeComponent([InjectAsComment, InjectByTag]);
+    this.executeComponent([InjectAsComment, InjectByTag]);
   }
 
   /**
@@ -80,7 +80,7 @@ export default class WebpackAutoInject {
    * - general layer for comp execution
    * - used for both, webpack and non webpack comp
    */
-  async executeComponent(components) {
+  executeComponent(components) {
     // no more components,
     // finish
     if (!components.length) {
@@ -92,7 +92,7 @@ export default class WebpackAutoInject {
 
     // if component is disabled, call next component
     if (!this.config.components[ComponentClass.componentName.toLowerCase()]) {
-      await this.executeComponent(components);
+      this.executeComponent(components);
       return;
     }
 
@@ -100,10 +100,10 @@ export default class WebpackAutoInject {
     let inst = new ComponentClass(this);
 
     // await for apply to finish
-    await inst.apply();
+    inst.apply();
 
     // call next tick
-    await this.executeComponent(components);
+    this.executeComponent(components);
   }
 }
 

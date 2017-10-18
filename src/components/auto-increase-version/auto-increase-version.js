@@ -23,12 +23,8 @@ export default class AutoIncreaseVersion {
     // we have to register AutoIncreaseVersion instead of firing it straight away
     if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
       if (this.context.compiler) {
-        this.context.compiler.plugin('emit', async (compilation, cb) => {
-          await new Promise((resolve, reject) => {
-            this.resolve = resolve;
-            this.reject = reject;
-            this.start();
-          });
+        this.context.compiler.plugin('emit', (compilation, cb) => {
+          this.start();
           cb();
         });
       }
@@ -58,8 +54,6 @@ export default class AutoIncreaseVersion {
       this.minor();
     } else if (isArgv('patch')) {
       this.patch();
-    } else {
-      this.resolve();
     }
   }
 

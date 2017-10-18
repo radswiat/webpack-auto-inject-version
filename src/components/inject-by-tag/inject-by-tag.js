@@ -65,6 +65,5 @@ export default class InjectByTag {
       }
       cb();
     });
-    return new Promise((resolve) => { resolve(); });
   }
 }

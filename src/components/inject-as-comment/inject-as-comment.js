@@ -45,7 +45,6 @@ export default class InjectAsComment {
       }
       cb();
     });
-    return new Promise((resolve) => { resolve(); });
   }
 
   parseTags(baseOpen, baseClose) {
