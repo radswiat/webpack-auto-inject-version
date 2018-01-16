@@ -49,9 +49,13 @@ export default class WebpackAutoInject {
    * @param compiler
    * @protected
    */
-  async apply(compiler) {
+  apply(compiler) {
     this.compiler = compiler;
-    await this.executeWebpackComponents();
+    compiler.plugin('emit', async (compilation, cb) => {
+      this.compilation = compilation;
+      await this.executeWebpackComponents();
+      cb();
+    });
   }
 
   /**

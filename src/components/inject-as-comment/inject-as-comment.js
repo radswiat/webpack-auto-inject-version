@@ -24,27 +24,25 @@ export default class InjectAsComment {
    * @returns {Promise}
    */
   apply() {
-    this.context.compiler.plugin('emit', (compilation, cb) => {
-      for (let basename in compilation.assets) {
-        let ext = path.extname(basename);
-        let asset = compilation.assets[basename];
-        switch (ext) {
-          case '.js' :
-            this.injectIntoJs(asset);
-            break;
-          case '.html' :
-            this.injectIntoHtml(asset);
-            break;
-          case '.css' :
-            this.injectIntoCss(asset);
-            break;
-          default:
-            break;
-        }
-        log.info(`InjectAsComment : match : ${basename} : injected : ${this.context.version}`);
+    for (let basename in this.context.compilation.assets) {
+      let ext = path.extname(basename);
+      let asset = this.context.compilation.assets[basename];
+      switch (ext) {
+        case '.js' :
+          this.injectIntoJs(asset);
+          break;
+        case '.html' :
+          this.injectIntoHtml(asset);
+          break;
+        case '.css' :
+          this.injectIntoCss(asset);
+          break;
+        default:
+          break;
       }
-      cb();
-    });
+      log.info(`InjectAsComment : match : ${basename} : injected : ${this.context.version}`);
+    }
+
     return new Promise((resolve) => { resolve(); });
   }
 

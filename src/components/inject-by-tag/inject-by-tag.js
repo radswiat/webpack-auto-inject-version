@@ -22,49 +22,46 @@ export default class InjectByTag {
    * @returns {Promise}
    */
   apply() {
-    this.context.compiler.plugin('emit', (compilation, cb) => {
-      // for every output file
-      for (let basename in compilation.assets) {
-        // only if match regex
-        if (this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename)) {
-          let replaced = 0;
-          let asset = compilation.assets[basename];
+    // for every output file
+    for (let basename in this.context.compilation.assets) {
+      // only if match regex
+      if (this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename)) {
+        let replaced = 0;
+        let asset = this.context.compilation.assets[basename];
 
-          const originalSource = asset.source();
-          if (!originalSource || typeof originalSource.replace !== 'function') {
-            continue;
-          }
+        const originalSource = asset.source();
+        if (!originalSource || typeof originalSource.replace !== 'function') {
+          continue;
+        }
 
-          let modFile = originalSource.replace(InjectByTag.AIVTagRegexp, (tag) => {
-            // handle version
-            tag = tag.replace(/(\{)(version)(\})/g, () => {
-              return this.context.version;
-            });
-
-            // handle date
-            tag = tag.replace(/(\{)(date)(\})/g, () => {
-              return dateFormat(new Date(), config.componentsOptions.InjectByTag.dateFormat);
-            });
-
-            // remove [AIV] and [/AIV]
-            tag = tag.replace(/(\[AIV])|(\[\/AIV])/g, '');
-
-            replaced++;
-
-            return tag;
+        let modFile = originalSource.replace(InjectByTag.AIVTagRegexp, (tag) => {
+          // handle version
+          tag = tag.replace(/(\{)(version)(\})/g, () => {
+            return this.context.version;
           });
 
-          // let modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
-          //   replaced++;
-          //   return this.context.version;
-          // });
+          // handle date
+          tag = tag.replace(/(\{)(date)(\})/g, () => {
+            return dateFormat(new Date(), config.componentsOptions.InjectByTag.dateFormat);
+          });
 
-          asset.source = () => modFile;
-          log.info(`InjectByTag : match : ${basename} : replaced : ${replaced}`);
-        }
+          // remove [AIV] and [/AIV]
+          tag = tag.replace(/(\[AIV])|(\[\/AIV])/g, '');
+
+          replaced++;
+
+          return tag;
+        });
+
+        // let modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
+        //   replaced++;
+        //   return this.context.version;
+        // });
+
+        asset.source = () => modFile;
+        log.info(`InjectByTag : match : ${basename} : replaced : ${replaced}`);
       }
-      cb();
-    });
+    }
     return new Promise((resolve) => { resolve(); });
   }
 }

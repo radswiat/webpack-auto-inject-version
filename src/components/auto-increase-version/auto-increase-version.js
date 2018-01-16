@@ -18,20 +18,15 @@ export default class AutoIncreaseVersion {
    * @protected
    * @returns {Promise}
    */
-  apply() {
+  async apply() {
     // when runInWatchMode
     // we have to register AutoIncreaseVersion instead of firing it straight away
     if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
-      if (this.context.compiler) {
-        this.context.compiler.plugin('emit', async (compilation, cb) => {
-          await new Promise((resolve, reject) => {
-            this.resolve = resolve;
-            this.reject = reject;
-            this.start();
-          });
-          cb();
-        });
-      }
+      await new Promise((resolve, reject) => {
+        this.resolve = resolve;
+        this.reject = reject;
+        this.start();
+      });
       return null;
     }
 
