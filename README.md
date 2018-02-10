@@ -31,6 +31,10 @@ It's easy to set it up, all you need is:
 * use WebpackAutoInject in webpack plugins  
 * pass config as a parameter, or leave it blank as all options are "on" by default.
 
+### More info  
+* Date format masks [dateFormat](https://github.com/felixge/node-dateformat#mask-options)
++ Version management [semver](https://github.com/npm/node-semver)
+
 ### Simple config example ( in webpack.conf.js )
 ```js
 var WebpackAutoInject = require('webpack-auto-inject-version');
