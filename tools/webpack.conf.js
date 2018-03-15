@@ -4,12 +4,12 @@ export default {
   target: 'node',
   entry: ['./src/main.js'],
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
   },
   output: {
     filename: 'WebpackAutoInjectVersion.js',
     path: path.resolve(process.cwd(), 'dist'),
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
   },
   module: {
     loaders: [
@@ -17,23 +17,22 @@ export default {
         test: /\.js$/,
         use: [
           'babel-loader',
-          'eslint-loader'
         ],
         include: [
-          path.resolve('src')
-        ]
+          path.resolve('src'),
+        ],
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'json-loader',
       },
       {
         test: /\.txt$/,
-        loader: 'raw-loader'
-      }
-    ]
+        loader: 'raw-loader',
+      },
+    ],
   },
   plugins: [
 
-  ]
+  ],
 };

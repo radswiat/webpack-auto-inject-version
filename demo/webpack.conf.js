@@ -1,61 +1,63 @@
-var path = require('path');
+const path = require('path');
+
 // Require WebpackAutoInject from npm installed modules ( preferred )
 // var WebpackAutoInject = require('webpack-auto-inject-version');
 // Require WebpackAutoInject from dist - dev purpose only ( do not use the below line )
-var WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
+const WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
 
 module.exports = {
   watch: true,
   entry: {
-    index: ['./src/main.js']
+    index: ['./src/main.js'],
   },
   resolve: {
-    extensions: ['.js', '.html']
+    extensions: ['.js', '.html'],
   },
   output: {
     filename: '[name]-bundle.js',
-    path: path.resolve(process.cwd(), 'dist')
+    path: path.resolve(process.cwd(), 'dist'),
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
         include: [
-          path.resolve('src')
-        ]
+          path.resolve('src'),
+        ],
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'json-loader',
       },
       {
         test: /\.txt$/,
-        loader: 'raw-loader'
+        loader: 'raw-loader',
       },
       {
         test: /\.html$/,
-        loader: 'raw-loader!html-minify-loader'
-      }
-    ]
+        loader: 'raw-loader!html-minify-loader',
+      },
+    ],
   },
   plugins: [
     new WebpackAutoInject({
       components: {
-        AutoIncreaseVersion: true,
-        InjectAsComment: true,
-        InjectByTag: true
+        AutoIncreaseVersion: false,
+        InjectAsComment: false,
+        InjectByTag: true,
       },
       componentsOptions: {
         AutoIncreaseVersion: {
-          runInWatchMode: false // it will increase version with every single build!
+          runInWatchMode: false, // it will increase version with every single build!
         },
         InjectAsComment: {
-          tag: 'Version: {version} - {date}'
+          tag: 'Version: {version}, {date}',
         },
         InjectByTag: {
-          fileRegex: /\.+/
-        }
-      }
-    })
-  ]
+          fileRegex: /\.+/,
+          dateFormat: 'h:MM:ss',
+        },
+      },
+    }),
+  ],
 };

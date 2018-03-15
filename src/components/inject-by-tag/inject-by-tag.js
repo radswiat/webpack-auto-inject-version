@@ -10,7 +10,6 @@ import config from 'config';
 export default class InjectByTag {
 
   static componentName = 'InjectByTag';
-  static AIVTagRegexp = /(\[AIV])(([a-zA-Z{} :;!()_@\-"'\\\/])+)(\[\/AIV])/g;
 
   constructor(context) {
     this.context = context;
@@ -19,23 +18,23 @@ export default class InjectByTag {
   /**
    * Apply will be called from main class
    * @protected
-   * @returns {Promise}
+   * @return {Promise}
    */
   apply() {
     this.context.compiler.plugin('emit', (compilation, cb) => {
       // for every output file
-      for (let basename in compilation.assets) {
+      for (const basename in compilation.assets) {
         // only if match regex
         if (this.context.config.componentsOptions.InjectByTag.fileRegex.test(basename)) {
           let replaced = 0;
-          let asset = compilation.assets[basename];
+          const asset = compilation.assets[basename];
 
           const originalSource = asset.source();
           if (!originalSource || typeof originalSource.replace !== 'function') {
             continue;
           }
 
-          let modFile = originalSource.replace(InjectByTag.AIVTagRegexp, (tag) => {
+          const modFile = originalSource.replace(this.context.config.componentsOptions.InjectByTag.AIVTagRegexp, (tag) => {
             // handle version
             tag = tag.replace(/(\{)(version)(\})/g, () => {
               return this.context.version;
@@ -53,11 +52,6 @@ export default class InjectByTag {
 
             return tag;
           });
-
-          // let modFile = originalSource.replace(/(\[AIV\]{version}\[\/AIV\])/g, () => {
-          //   replaced++;
-          //   return this.context.version;
-          // });
 
           asset.source = () => modFile;
           log.info(`InjectByTag : match : ${basename} : replaced : ${replaced}`);

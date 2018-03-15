@@ -1,9 +1,10 @@
-/* global define */
 import fs from 'fs';
 import path from 'path';
+
 import config from 'config';
 import log from 'core/log';
-import { merge, transform } from 'lodash';
+import merge from 'lodash/merge';
+import transform from 'lodash/transform';
 
 // import sub components
 import AutoIncreaseVersion from 'components/auto-increase-version/auto-increase-version';
@@ -19,7 +20,7 @@ export default class WebpackAutoInject {
    */
   constructor(userConfig) {
     this.setConfig(userConfig);
-    let packageFile = JSON.parse(
+    const packageFile = JSON.parse(
       fs.readFileSync(path.resolve(this.config.PACKAGE_JSON_PATH), 'utf8')
     );
     this.version = packageFile.version;
@@ -35,7 +36,7 @@ export default class WebpackAutoInject {
    */
   setConfig(userConfig) {
     this.config = merge(config, userConfig);
-
+    console.log(this.config);
     // lets convert all components names to lowercase - to prevent issues
     this.config.components = transform(this.config.components, (result, val, key) => {
       result[key.toLowerCase()] = val;

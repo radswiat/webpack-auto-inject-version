@@ -24,8 +24,6 @@ Auto Inject Version (AIV) can:
 - auto increase package.json version by --env.major, --env.minor, --env.patch passed into webpack
 
 
-
-
 # How to use
 It's easy to set it up, all you need is: 
 * use WebpackAutoInject in webpack plugins  
@@ -56,6 +54,8 @@ module.exports = {
     plugins: [
       new WebpackAutoInject({
         NAME: 'AIV custom name',
+        // specify the name of the tag in the outputed files eg
+        // bundle.js: [SHORT]  Version: 0.13.36 ...
         SHORT: 'CUSTOM',
         SILENT: false,
         PACKAGE_JSON_PATH: './package.json',
@@ -74,6 +74,9 @@ module.exports = {
           },
           InjectByTag: {
             fileRegex: /\.+/,
+            // regexp to find [AIV] tag inside html, if you tag contains unallowed characters you can adjust the regex
+            // but also you can change [AIV] tag to anything you want
+            AIVTagRegexp: /(\[AIV])(([a-zA-Z{} ,:;!()_@\-"'\\\/])+)(\[\/AIV])/g,
             dateFormat: 'h:MM:ss TT'
           }
         },
@@ -99,6 +102,9 @@ module.exports = {
   </span>
   <span>
     [AIV]V:{version} Date:{date}[/AIV]
+  </span>
+  <span>
+    [AIV]Version {version} , {date}[/AIV]
   </span>
 </body>
 ```

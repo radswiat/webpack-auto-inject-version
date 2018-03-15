@@ -1,27 +1,24 @@
 {
   "parser": "babel-eslint",
   "extends": "airbnb",
+  "plugins": [
+    "jsdoc",
+    "import",
+    "filenames"
+  ],
   "env": {
     "browser": true,
     "node": true,
-    "es6": true,
+    "es6": true
   },
-  "ecmaFeatures": {
-    "arrowFunctions": true,
-    "blockBindings": true,
-    "classes": true,
-    "defaultParams": true,
-    "destructuring": true,
-    "jsx": true,
-    "modules": true,
-    "objectLiteralComputedProperties": true,
-    "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true,
-    "spread": true,
-    "templateStrings": true
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "globals": {
     "__DEV__": true,
+    "test": true,
     "describe": true,
     "it": true,
     "beforeEach": true,
@@ -30,44 +27,81 @@
     "browser": true,
     "by": true,
     "element": true,
-    "jasmine": true
+    "jasmine": true,
+    "If": true,
+    "For": true,
+    "When": true,
+    "Choose": true,
+    "cy": true
   },
-  "plugins": [
-    "react"
-  ],
+  "settings": {
+    "jsdoc": {
+      "tagNamePreference": {
+        "param": "param",
+        "returns": "return"
+      }
+    }
+  },
   "rules": {
-    "no-unneeded-ternary" : "off",
+    "spaced-comment": "off",
+    "no-unused-expressions": "off",
+    "func-names": "off",
+    "new-parens": "off",
+    "no-continue": "off",
+    "one-var": ["error", "never"],
+    "class-methods-use-this": "off",
+    "no-restricted-syntax": "off",
+    "no-underscore-dangle": "off",
+    "consistent-return": "off",
     "no-console": "off",
-    "object-curly-spacing": ["error", "always", {
-      "objectsInObjects": false,
-      "arraysInObjects": false
+    "guard-for-in": "off",
+    "no-param-reassign": "off",
+    "arrow-body-style": "off",
+    "prefer-destructuring": "off",
+    "max-len": ["error", 140],
+    "no-unused-vars": ["error", { "vars": "all", "args": "none" }],
+    "arrow-parens": ["error", "always"],
+    "padded-blocks": "off",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "no-new": "off",
+    "new-cap": "off",
+    "function-paren-newline": "off",
+    "no-mixed-operators": "off",
+    "no-await-in-loop": "off",
+    "no-plusplus": "off",
+    "newline-per-chained-call": "off",
+    "no-restricted-globals": "off",
+    "object-curly-newline":"off",
+    "array-callback-return": "off",
+
+    "import/no-dynamic-require": "off",
+    "import/prefer-default-export": "off",
+    "import/first": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "import/no-mutable-exports": "off",
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "sibling", "parent", "index"],
+      "newlines-between": "always-and-inside-groups"
     }],
-    "comma-dangle": ["error", "never"],
-    "max-len": ["error", 100, 4, {"ignoreUrls": true}],
-    "space-before-function-paren": ["error", "never"],
-    "no-multiple-empty-lines": ["error", {max: 1}],
-    "no-use-before-define": 0,
-    "global-require": 0,
-    "no-else-return": "error",
-    "no-param-reassign": 0,
-    "prefer-const": 0,
-    "func-names": 0,
-    "arrow-body-style": 0,
-    "react/jsx-no-bind": [2, {
-      "ignoreRefs": false,
-      "allowArrowFunctions": true,
-      "allowBind": true
-    }],
-    "guard-for-in": 0,
-    "react/jsx-key": 2,
-    "react/jsx-no-undef": 0,
-    "react/prefer-stateless-function": 0,
-    "react/jsx-closing-bracket-location": 0,
-    "no-undef": "error",
-    "one-var": 0,
-    "no-extra-semi": "error",
-    "semi": "error",
-    "prefer-arrow-callback": "error",
-    "new-cap":  "off"
+
+    "jsdoc/check-param-names": 2,
+    "jsdoc/check-tag-names": 2,
+    "jsdoc/check-types": 2,
+    "jsdoc/newline-after-description": 0,
+    "jsdoc/require-description-complete-sentence": 0,
+    "jsdoc/require-example": 0,
+    "jsdoc/require-hyphen-before-param-description": 2,
+    "jsdoc/require-param": 2,
+    "jsdoc/require-param-description": 0,
+    "jsdoc/require-param-name": 2,
+    "jsdoc/require-param-type": 0,
+    "jsdoc/require-returns-description": 0,
+    "jsdoc/require-returns-type": 2,
+
+    "filenames/match-regex": [2, "^(_){0,1}([a-zA-Z0-9])[0-9a-z-.]+$"],
+    "filenames/match-exported": [2, "kebab", "_" ],
+    "filenames/no-index": "off"
   }
 }

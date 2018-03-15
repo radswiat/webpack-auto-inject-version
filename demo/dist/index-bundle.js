@@ -1,5 +1,4 @@
-// [AIV]  Version: 0.13.36 - Friday, August 25th, 2017, 1:56:17 PM  
- /******/ (function(modules) { // webpackBootstrap
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -88,7 +87,7 @@ test(myVariable);
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>0.13.36</span> <span>Friday, August 25th, 2017, 1:56:17 PM</span> <span>0.13.36_Friday, August 25th, 2017, 1:56:17 PM</span> <span>V:0.13.36 Date:Friday, August 25th, 2017, 1:56:17 PM</span></body></html>"
+module.exports = "<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Title</title></head><body><span>0.13.36</span> <span>7:54:43</span> <span>0.13.36_7:54:43</span> <span>V:0.13.36 Date:7:54:43</span> <span>Version 0.13.36 , 7:54:43</span></body></html>"
 
 /***/ }),
 /* 2 */
@@ -98,4 +97,4 @@ module.exports = __webpack_require__(0);
 
 
 /***/ })
-/******/ ]); 
+/******/ ]);
