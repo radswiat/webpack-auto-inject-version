@@ -2,7 +2,7 @@ import path from 'path';
 
 export default {
   target: 'node',
-  entry: ['./src/main.js'],
+  entry: ['./src/webpack-auto-inject.js'],
   resolve: {
     extensions: ['.js'],
   },

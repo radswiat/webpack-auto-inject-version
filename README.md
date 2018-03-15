@@ -12,9 +12,8 @@ $ npm install webpack-auto-inject-version --save-dev
 [How to use](#user-content-how-to-use) <br>
 [Available options](#user-content-available-options) <br>
 [Output examples](#user-content-output-examples)
+[How to use with other webpack plugins](#user-content-how-to-use-with-other-webpack-plugins)
 [Change log](#user-content-change-log)
-
-
 
 # What it does
 Auto Inject Version (AIV) can:
@@ -22,7 +21,6 @@ Auto Inject Version (AIV) can:
 - inject version from package.json into any place in your HTML by special tag `[AIV]{version}[/AIV]`
 - inject version from package.json into any place in CSS/JS file by special tag `[AIV]{version}[/AIV]`
 - auto increase package.json version by --env.major, --env.minor, --env.patch passed into webpack
-
 
 # How to use
 It's easy to set it up, all you need is: 
@@ -53,7 +51,6 @@ module.exports = {
     ...
     plugins: [
       new WebpackAutoInject({
-        NAME: 'AIV custom name',
         // specify the name of the tag in the outputed files eg
         // bundle.js: [SHORT]  Version: 0.13.36 ...
         SHORT: 'CUSTOM',
@@ -201,9 +198,53 @@ Example html:
 <html lang="en">
 ```
 
+# How to use with other webpack plugins
 
+Webpack plugins order matters!
+Always try to put WebpackAutoInject as a first webpack plugin.
+
+## compression-webpack-plugin
+
+```
+  plugins: [
+    new WebpackAutoInject(),
+    new CompressionPlugin(),
+  ]
+```
+
+## uglifyjs-webpack-plugin
+
+```
+  plugins: [
+    new WebpackAutoInject(),
+    new UglifyJsPlugin(),
+  ]
+```
+
+## webpack.optimize.UglifyJsPlugin
+
+If the order won't be enough, you can always add ignore to the uglifyJsPlugin
+to prevent stripping out AIV comments eg:
+
+```
+  new webpack.optimize.UglifyJsPlugin({
+    ...
+    output: {
+      // prevent version info to be removed from bundle.js
+      comments: /\[AIV\]/,
+    },
+    ...
+  });
+```
 
 # Change log
+## [1.1.0] - 15/03/2018
+- webpack sync apply
+- "name" has been removed as not used anyway, use SHORT instead
+- eslint changes
+- InjectByTag - AIVTagRegexp exposed in config to allow [AIV] tag modifications
+- comma fix in InjectByTag regexp
+- query has on filename has been fixed
 ## [1.0.0] - 25/08/2017
 - Date format can now be specified for InjectAsComment
 - Date format can now be specified for InjectByTag

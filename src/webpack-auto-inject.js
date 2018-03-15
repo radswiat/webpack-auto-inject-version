@@ -1,3 +1,4 @@
+/* global define */
 import fs from 'fs';
 import path from 'path';
 
@@ -25,7 +26,7 @@ export default class WebpackAutoInject {
     );
     this.version = packageFile.version;
     log.call('info', 'AIS_START');
-    this.executeNoneWebpackComponents();
+    this._executeNoneWebpackComponents();
   }
 
   /**
@@ -36,7 +37,7 @@ export default class WebpackAutoInject {
    */
   setConfig(userConfig) {
     this.config = merge(config, userConfig);
-    console.log(this.config);
+
     // lets convert all components names to lowercase - to prevent issues
     this.config.components = transform(this.config.components, (result, val, key) => {
       result[key.toLowerCase()] = val;
@@ -47,12 +48,14 @@ export default class WebpackAutoInject {
    * Webpack apply call,
    * when webpack is initialized and
    * plugin has been called by webpack
-   * @param compiler
+   *
    * @protected
+   *
+   * @param compiler
    */
-  async apply(compiler) {
+  apply(compiler) {
     this.compiler = compiler;
-    await this.executeWebpackComponents();
+    this._executeWebpackComponents();
   }
 
   /**
@@ -60,8 +63,8 @@ export default class WebpackAutoInject {
    * - runs as soon as possible,
    *   > without waiting for webpack init
    */
-  async executeNoneWebpackComponents() {
-    await this.executeComponent([AutoIncreaseVersion]);
+  _executeNoneWebpackComponents() {
+    this._executeComponent([AutoIncreaseVersion]);
   }
 
   /**
@@ -69,19 +72,23 @@ export default class WebpackAutoInject {
    * - runs when webpack is initialized
    *   and plugins is called by webpack
    */
-  async executeWebpackComponents() {
+  _executeWebpackComponents() {
     if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
-      await this.executeComponent([AutoIncreaseVersion]);
+      this._executeComponent([AutoIncreaseVersion]);
     }
-    await this.executeComponent([InjectAsComment, InjectByTag]);
+    this._executeComponent([InjectAsComment, InjectByTag]);
   }
 
   /**
    * Execute components,
    * - general layer for comp execution
    * - used for both, webpack and non webpack comp
+   *
+   * @private
+   *
+   * @param components
    */
-  async executeComponent(components) {
+  _executeComponent(components) {
     // no more components,
     // finish
     if (!components.length) {
@@ -89,22 +96,22 @@ export default class WebpackAutoInject {
     }
 
     // take first component class
-    let ComponentClass = components.shift();
+    const ComponentClass = components.shift();
 
     // if component is disabled, call next component
     if (!this.config.components[ComponentClass.componentName.toLowerCase()]) {
-      await this.executeComponent(components);
+      this._executeComponent(components);
       return;
     }
 
     // execute component
-    let inst = new ComponentClass(this);
+    const inst = new ComponentClass(this);
 
     // await for apply to finish
-    await inst.apply();
+    inst.apply();
 
     // call next tick
-    await this.executeComponent(components);
+    this._executeComponent(components);
   }
 }
 

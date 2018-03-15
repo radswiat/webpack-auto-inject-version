@@ -7,5 +7,5 @@ export default {
   },
   date: () => {
     return dateFormat(new Date(), config.componentsOptions.InjectAsComment.dateFormat);
-  }
+  },
 };

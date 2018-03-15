@@ -1,6 +1,8 @@
-import config from 'config';
 import chalk from 'chalk';
+
+import config from 'config';
 import { isArgv } from 'core/utils';
+
 const endOfLine = require('os').EOL;
 
 class Log {
@@ -21,7 +23,7 @@ class Log {
 
   /**
    * Get console log head
-   * @returns {string}
+   * @return {string}
    */
   getHead() {
     return endOfLine + chalk.bgYellow.black('[AIV] : ');
@@ -29,6 +31,7 @@ class Log {
 
   /**
    * Get log text by ID from config file
+   * @param id
    */
   getText(id) {
     return config.LOGS_TEXT[id];
@@ -37,7 +40,7 @@ class Log {
   /**
    * Call any type
    * @param type
-   * @param msg
+   * @param msgId
    */
   call(type, msgId) {
     if (typeof this[type] === 'function') {

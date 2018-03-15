@@ -1,5 +1,4 @@
 export default {
-  NAME: 'Auto Inject Version CONFIG',
   SHORT: 'AIV_SHORT',
   SILENT: false,
   PACKAGE_JSON_PATH: './package.json',

@@ -1,11 +1,12 @@
 {
   "name": "webpack-auto-inject-version",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": "radswiat/webpack-auto-inject-version",
   "description": "Webpack plugin for auto inject version from package.json",
   "main": "dist/WebpackAutoInjectVersion.js",
   "scripts": {
     "start": "babel-node tools/compile.js",
+    "start:watch": "babel-node tools/compile-watch.js",
     "eslint": "eslint ./src/**"
   },
   "author": "Radoslaw Swiat",

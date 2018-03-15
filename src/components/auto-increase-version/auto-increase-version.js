@@ -1,6 +1,7 @@
-import semver from 'semver';
 import path from 'path';
 import fs from 'fs';
+
+import semver from 'semver';
 import { isArgv } from 'core/utils';
 import log from 'core/log';
 import config from 'config';
@@ -15,20 +16,24 @@ export default class AutoIncreaseVersion {
 
   /**
    * Apply will be called from main class
+   *
    * @protected
-   * @returns {Promise}
+   * @return {Promise}
    */
   apply() {
+
+    // setup promise
+    const promise = new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+
     // when runInWatchMode
     // we have to register AutoIncreaseVersion instead of firing it straight away
     if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
       if (this.context.compiler) {
-        this.context.compiler.plugin('emit', async (compilation, cb) => {
-          await new Promise((resolve, reject) => {
-            this.resolve = resolve;
-            this.reject = reject;
-            this.start();
-          });
+        this.context.compiler.plugin('emit', (compilation, cb) => {
+          this.start();
           cb();
         });
       }
@@ -36,11 +41,8 @@ export default class AutoIncreaseVersion {
     }
 
     // when runInWatchMode is off
-    return new Promise((resolve, reject) => {
-      this.resolve = resolve;
-      this.reject = reject;
-      this.start();
-    });
+    this.start();
+    return promise;
   }
 
   /**
@@ -65,7 +67,7 @@ export default class AutoIncreaseVersion {
 
   /**
    * Open package file
-   * @returns {any}
+   * @return {any}
    */
   openPackageFile() {
     try {
@@ -76,6 +78,7 @@ export default class AutoIncreaseVersion {
         )
       );
     } catch (err) {
+      console.log(err);
       return null;
     }
   }
@@ -106,7 +109,7 @@ export default class AutoIncreaseVersion {
    * Increase major
    */
   major() {
-    let newVersion = semver.inc(this.packageFile.version, 'major');
+    const newVersion = semver.inc(this.packageFile.version, 'major');
     this.closePackageFile(newVersion);
   }
 
@@ -114,7 +117,7 @@ export default class AutoIncreaseVersion {
    * Increase minor
    */
   minor() {
-    let newVersion = semver.inc(this.packageFile.version, 'minor');
+    const newVersion = semver.inc(this.packageFile.version, 'minor');
     this.closePackageFile(newVersion);
   }
 
@@ -122,7 +125,7 @@ export default class AutoIncreaseVersion {
    * Increase patch
    */
   patch() {
-    let newVersion = semver.inc(this.packageFile.version, 'patch');
+    const newVersion = semver.inc(this.packageFile.version, 'patch');
     this.closePackageFile(newVersion);
   }
 }

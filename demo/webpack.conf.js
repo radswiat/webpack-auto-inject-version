@@ -1,9 +1,13 @@
 const path = require('path');
 
+const CompressionPlugin = require('compression-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
 // Require WebpackAutoInject from npm installed modules ( preferred )
 // var WebpackAutoInject = require('webpack-auto-inject-version');
 // Require WebpackAutoInject from dist - dev purpose only ( do not use the below line )
 const WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
+
 
 module.exports = {
   watch: true,
@@ -14,10 +18,12 @@ module.exports = {
     extensions: ['.js', '.html'],
   },
   output: {
-    filename: 'js/[name].js?[chunkhash]',
+    // filename: '[name]-bundle.js',
+    // path: path.resolve(process.cwd(), 'dist'),
+    // publicPath: '/', // Public path to 'dist' scope in production
+    filename: 'js/main.js?[chunkhash]',
     path: path.resolve(process.cwd(), 'dist'),
-    chunkFilename: 'js/[id].js?[chunkhash]',
-    publicPath: '/', // Public path to 'dist' scope in production
+    chunkFilename: 'js/main.js?[chunkhash]',
   },
   module: {
     loaders: [
@@ -61,5 +67,9 @@ module.exports = {
         },
       },
     }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
+    }),
+    new UglifyJsPlugin(),
   ],
 };

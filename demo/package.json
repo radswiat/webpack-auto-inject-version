@@ -1,6 +1,6 @@
 {
   "name": "example-using-inject",
-  "version": "0.13.36",
+  "version": "0.14.0",
   "description": "This is an example how to use webpack-auto-inject-version plugin in webpack",
   "scripts": {
     "start": "webpack --config ./webpack.conf.js",
@@ -11,9 +11,11 @@
   "author": "Radoslaw Swiat",
   "license": "ISC",
   "devDependencies": {
+    "compression-webpack-plugin": "^1.1.11",
     "html-loader": "^0.4.5",
     "html-minify-loader": "^1.1.0",
     "raw-loader": "^0.5.1",
+    "uglifyjs-webpack-plugin": "^1.2.3",
     "webpack": "^2.3.3",
     "webpack-auto-inject-version": "^0.5.10"
   }
