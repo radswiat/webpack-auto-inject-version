@@ -12,8 +12,8 @@ $ npm install webpack-auto-inject-version --save-dev
 [How to use](#user-content-how-to-use) <br>
 [Available options](#user-content-available-options) <br>
 [Output examples](#user-content-output-examples)
-[How to use with other webpack plugins](#user-content-how-to-use-with-other-webpack-plugins)
-[Change log](#user-content-change-log)
+[How to use with other webpack plugins](#user-content-how-to-use-with-other-webpack-plugins)<br>
+[Change log](#user-content-change-log)<br>
 
 # What it does
 Auto Inject Version (AIV) can:
