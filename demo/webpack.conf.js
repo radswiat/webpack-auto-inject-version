@@ -14,8 +14,10 @@ module.exports = {
     extensions: ['.js', '.html'],
   },
   output: {
-    filename: '[name]-bundle.js',
+    filename: 'js/[name].js?[chunkhash]',
     path: path.resolve(process.cwd(), 'dist'),
+    chunkFilename: 'js/[id].js?[chunkhash]',
+    publicPath: '/', // Public path to 'dist' scope in production
   },
   module: {
     loaders: [
@@ -42,8 +44,8 @@ module.exports = {
   plugins: [
     new WebpackAutoInject({
       components: {
-        AutoIncreaseVersion: false,
-        InjectAsComment: false,
+        AutoIncreaseVersion: true,
+        InjectAsComment: true,
         InjectByTag: true,
       },
       componentsOptions: {
