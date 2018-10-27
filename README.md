@@ -240,6 +240,8 @@ to prevent stripping out AIV comments eg:
 ```
 
 # Change log
+## [1.2.1] - 27/10/2018
+- security updates
 ## [1.2.0] - 27/10/2018
 - inject as comment will no more be a version behind with auto increase version
 - inject as comment can now switched to multiline comment type eg /** */
