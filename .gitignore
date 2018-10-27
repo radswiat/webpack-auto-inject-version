@@ -1,4 +1,7 @@
 .idea/
+.vscode/
 node_modules/
 demo/node_modules/
+demo/package-lock.json
+demo/dist
 npm-debug*

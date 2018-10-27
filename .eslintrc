@@ -4,7 +4,8 @@
   "plugins": [
     "jsdoc",
     "import",
-    "filenames"
+    "filenames",
+    "babel"
   ],
   "env": {
     "browser": true,
@@ -43,6 +44,7 @@
     }
   },
   "rules": {
+    "babel/arrow-parens": 2,
     "spaced-comment": "off",
     "no-unused-expressions": "off",
     "func-names": "off",
