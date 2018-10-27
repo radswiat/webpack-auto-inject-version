@@ -113,7 +113,7 @@ export default class AutoIncreaseVersion {
     // write new package.json file
     fs.writeFile(
       path.resolve(this.context.config.PACKAGE_JSON_PATH),
-      JSON.stringify(this.packageFile, null, 4), (err) => {
+      JSON.stringify(this.packageFile, null, this.context.config.PACKAGE_JSON_INDENT), (err) => {
         if (err) {
           this.reject(err);
           console.log(err);

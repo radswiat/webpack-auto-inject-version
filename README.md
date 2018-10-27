@@ -56,6 +56,7 @@ module.exports = {
         SHORT: 'CUSTOM',
         SILENT: false,
         PACKAGE_JSON_PATH: './package.json',
+        PACKAGE_JSON_INDENT: 4,
         components: {
           AutoIncreaseVersion: true,
           InjectAsComment: true,
