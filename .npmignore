@@ -1,4 +1,5 @@
 npm-debug*
 .idea/
+.vscode/
 demo/
 scrapyard/

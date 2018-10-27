@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 251);
+/******/ 	return __webpack_require__(__webpack_require__.s = 252);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -156,6 +156,14 @@ module.exports = isArray;
 /* 4 */
 /***/ (function(module, exports) {
 
+var core = module.exports = { version: '2.5.7' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -190,14 +198,6 @@ module.exports = isObject;
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.5.3' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -212,8 +212,8 @@ module.exports = function (it) {
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(161),
-    getValue = __webpack_require__(193);
+var baseIsNative = __webpack_require__(162),
+    getValue = __webpack_require__(194);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -277,7 +277,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  NAME: 'Auto Inject Version CONFIG',
   SHORT: 'AIV_SHORT',
   SILENT: false,
   PACKAGE_JSON_PATH: './package.json',
@@ -292,7 +291,8 @@ exports.default = {
     },
     InjectAsComment: {
       tag: 'Build version: {version} - {date}',
-      dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT'
+      dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT',
+      multiLineCommentType: false
     },
     InjectByTag: {
       fileRegex: /\.+/,
@@ -310,7 +310,7 @@ exports.default = {
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(62)(function () {
+module.exports = !__webpack_require__(63)(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -334,8 +334,8 @@ module.exports = __webpack_require__(10) ? function (object, key, value) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(26),
-    getRawTag = __webpack_require__(190),
-    objectToString = __webpack_require__(219);
+    getRawTag = __webpack_require__(191),
+    objectToString = __webpack_require__(220);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -416,9 +416,10 @@ exports.default = function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(0);
-var core = __webpack_require__(5);
+var core = __webpack_require__(4);
 var ctx = __webpack_require__(23);
 var hide = __webpack_require__(11);
+var has = __webpack_require__(24);
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
@@ -436,7 +437,7 @@ var $export = function (type, name, source) {
   for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if (own && has(exports, key)) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -586,7 +587,7 @@ var _config = __webpack_require__(9);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _utils = __webpack_require__(58);
+var _utils = __webpack_require__(59);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -605,7 +606,11 @@ var Log = function () {
   (0, _createClass3.default)(Log, [{
     key: 'getLogLevel',
     value: function getLogLevel() {
-      if ((0, _utils.isArgv)('aiv-log-full')) {
+
+      // support npm log levels
+      if (process.env.npm_config_loglevel === 'silent') {
+        this.logLevel = 0;
+      } else if ((0, _utils.isArgv)('aiv-log-full')) {
         this.logLevel = 3;
       } else if ((0, _utils.isArgv)('aiv-log-none')) {
         this.logLevel = 0;
@@ -735,11 +740,11 @@ module.exports = function (it, key) {
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var listCacheClear = __webpack_require__(204),
-    listCacheDelete = __webpack_require__(205),
-    listCacheGet = __webpack_require__(206),
-    listCacheHas = __webpack_require__(207),
-    listCacheSet = __webpack_require__(208);
+var listCacheClear = __webpack_require__(205),
+    listCacheDelete = __webpack_require__(206),
+    listCacheGet = __webpack_require__(207),
+    listCacheHas = __webpack_require__(208),
+    listCacheSet = __webpack_require__(209);
 
 /**
  * Creates an list cache object.
@@ -812,7 +817,7 @@ module.exports = assocIndexOf;
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isKeyable = __webpack_require__(202);
+var isKeyable = __webpack_require__(203);
 
 /**
  * Gets the data for `map`.
@@ -848,7 +853,7 @@ module.exports = nativeCreate;
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSymbol = __webpack_require__(55);
+var isSymbol = __webpack_require__(56);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -876,7 +881,7 @@ module.exports = toKey;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(33),
-    isLength = __webpack_require__(54);
+    isLength = __webpack_require__(55);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -915,7 +920,7 @@ module.exports = isArrayLike;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(2),
-    stubFalse = __webpack_require__(241);
+    stubFalse = __webpack_require__(242);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -960,7 +965,7 @@ module.exports = isBuffer;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
-    isObject = __webpack_require__(4);
+    isObject = __webpack_require__(5);
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -1002,9 +1007,9 @@ module.exports = isFunction;
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(162),
-    baseUnary = __webpack_require__(176),
-    nodeUtil = __webpack_require__(218);
+var baseIsTypedArray = __webpack_require__(163),
+    baseUnary = __webpack_require__(177),
+    nodeUtil = __webpack_require__(219);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -1091,6 +1096,13 @@ module.exports = function (it) {
 
 /***/ }),
 /* 39 */
+/***/ (function(module, exports) {
+
+module.exports = true;
+
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1115,7 +1127,7 @@ module.exports.f = function (C) {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(18).f;
@@ -1128,7 +1140,7 @@ module.exports = function (it, tag, stat) {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(69)('keys');
@@ -1139,7 +1151,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
@@ -1151,7 +1163,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
@@ -1163,7 +1175,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(7),
@@ -1176,14 +1188,14 @@ module.exports = Map;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mapCacheClear = __webpack_require__(209),
-    mapCacheDelete = __webpack_require__(210),
-    mapCacheGet = __webpack_require__(211),
-    mapCacheHas = __webpack_require__(212),
-    mapCacheSet = __webpack_require__(213);
+var mapCacheClear = __webpack_require__(210),
+    mapCacheDelete = __webpack_require__(211),
+    mapCacheGet = __webpack_require__(212),
+    mapCacheHas = __webpack_require__(213),
+    mapCacheSet = __webpack_require__(214);
 
 /**
  * Creates a map cache object to store key-value pairs.
@@ -1214,15 +1226,15 @@ module.exports = MapCache;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(25),
-    stackClear = __webpack_require__(226),
-    stackDelete = __webpack_require__(227),
-    stackGet = __webpack_require__(228),
-    stackHas = __webpack_require__(229),
-    stackSet = __webpack_require__(230);
+    stackClear = __webpack_require__(227),
+    stackDelete = __webpack_require__(228),
+    stackGet = __webpack_require__(229),
+    stackHas = __webpack_require__(230),
+    stackSet = __webpack_require__(231);
 
 /**
  * Creates a stack cache object to store key-value pairs.
@@ -1247,7 +1259,7 @@ module.exports = Stack;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var defineProperty = __webpack_require__(83);
@@ -1278,7 +1290,7 @@ module.exports = baseAssignValue;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var overArg = __webpack_require__(88);
@@ -1290,7 +1302,7 @@ module.exports = getPrototype;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -1321,11 +1333,11 @@ module.exports = isIndex;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(3),
-    isSymbol = __webpack_require__(55);
+    isSymbol = __webpack_require__(56);
 
 /** Used to match property names within property paths. */
 var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
@@ -1356,7 +1368,7 @@ module.exports = isKey;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -1380,7 +1392,7 @@ module.exports = isPrototype;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 /**
@@ -1407,10 +1419,10 @@ module.exports = identity;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(158),
+var baseIsArguments = __webpack_require__(159),
     isObjectLike = __webpack_require__(8);
 
 /** Used for built-in method references. */
@@ -1449,7 +1461,7 @@ module.exports = isArguments;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -1490,7 +1502,7 @@ module.exports = isLength;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
@@ -1525,11 +1537,11 @@ module.exports = isSymbol;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayLikeKeys = __webpack_require__(76),
-    baseKeys = __webpack_require__(164),
+    baseKeys = __webpack_require__(165),
     isArrayLike = __webpack_require__(31);
 
 /**
@@ -1568,7 +1580,7 @@ module.exports = keys;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1579,7 +1591,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1589,7 +1601,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.isArgv = isArgv;
-var argv = __webpack_require__(246).argv;
+var argv = __webpack_require__(247).argv;
 
 /**
  * Get argv from webpack env[argv]
@@ -1611,13 +1623,13 @@ function isArgv(arg) {
 }
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = { "default": __webpack_require__(105), __esModule: true };
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
@@ -1646,7 +1658,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -1656,7 +1668,7 @@ module.exports = (
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -1669,7 +1681,7 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var document = __webpack_require__(0).document;
@@ -1677,19 +1689,18 @@ module.exports = document && document.documentElement;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(65);
+var LIBRARY = __webpack_require__(39);
 var $export = __webpack_require__(15);
 var redefine = __webpack_require__(125);
 var hide = __webpack_require__(11);
-var has = __webpack_require__(24);
 var Iterators = __webpack_require__(17);
 var $iterCreate = __webpack_require__(115);
-var setToStringTag = __webpack_require__(40);
+var setToStringTag = __webpack_require__(41);
 var getPrototypeOf = __webpack_require__(121);
 var ITERATOR = __webpack_require__(1)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -1713,7 +1724,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   var VALUES_BUG = false;
   var proto = Base.prototype;
   var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
+  var $default = $native || getMethod(DEFAULT);
   var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
   var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
   var methods, key, IteratorPrototype;
@@ -1724,7 +1735,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -1754,13 +1765,6 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 
 /***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-module.exports = true;
-
-
-/***/ }),
 /* 66 */
 /***/ (function(module, exports) {
 
@@ -1779,7 +1783,7 @@ module.exports = function (exec) {
 
 var anObject = __webpack_require__(6);
 var isObject = __webpack_require__(16);
-var newPromiseCapability = __webpack_require__(39);
+var newPromiseCapability = __webpack_require__(40);
 
 module.exports = function (C, x) {
   anObject(C);
@@ -1809,12 +1813,18 @@ module.exports = function (bitmap, value) {
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var core = __webpack_require__(4);
 var global = __webpack_require__(0);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
-  return store[key] || (store[key] = {});
-};
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: core.version,
+  mode: __webpack_require__(39) ? 'pure' : 'global',
+  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+});
 
 
 /***/ }),
@@ -1838,7 +1848,7 @@ module.exports = function (O, D) {
 
 var ctx = __webpack_require__(23);
 var invoke = __webpack_require__(111);
-var html = __webpack_require__(63);
+var html = __webpack_require__(64);
 var cel = __webpack_require__(38);
 var global = __webpack_require__(0);
 var process = global.process;
@@ -1927,7 +1937,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(42);
+var toInteger = __webpack_require__(43);
 var min = Math.min;
 module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -2194,11 +2204,11 @@ module.exports = Uint8Array;
 /* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(174),
-    isArguments = __webpack_require__(53),
+var baseTimes = __webpack_require__(175),
+    isArguments = __webpack_require__(54),
     isArray = __webpack_require__(3),
     isBuffer = __webpack_require__(32),
-    isIndex = __webpack_require__(49),
+    isIndex = __webpack_require__(50),
     isTypedArray = __webpack_require__(34);
 
 /** Used for built-in method references. */
@@ -2249,7 +2259,7 @@ module.exports = arrayLikeKeys;
 /* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(47),
+var baseAssignValue = __webpack_require__(48),
     eq = __webpack_require__(19);
 
 /**
@@ -2275,7 +2285,7 @@ module.exports = assignMergeValue;
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4);
+var isObject = __webpack_require__(5);
 
 /** Built-in value references. */
 var objectCreate = Object.create;
@@ -2311,7 +2321,7 @@ module.exports = baseCreate;
 /* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var createBaseFor = __webpack_require__(185);
+var createBaseFor = __webpack_require__(186);
 
 /**
  * The base implementation of `baseForOwn` which iterates over `object`
@@ -2363,7 +2373,7 @@ module.exports = baseGet;
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqualDeep = __webpack_require__(159),
+var baseIsEqualDeep = __webpack_require__(160),
     isObjectLike = __webpack_require__(8);
 
 /**
@@ -2398,9 +2408,9 @@ module.exports = baseIsEqual;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(3),
-    isKey = __webpack_require__(50),
-    stringToPath = __webpack_require__(231),
-    toString = __webpack_require__(243);
+    isKey = __webpack_require__(51),
+    stringToPath = __webpack_require__(232),
+    toString = __webpack_require__(244);
 
 /**
  * Casts `value` to a path array if it's not one.
@@ -2441,9 +2451,9 @@ module.exports = defineProperty;
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(146),
-    arraySome = __webpack_require__(153),
-    cacheHas = __webpack_require__(177);
+var SetCache = __webpack_require__(147),
+    arraySome = __webpack_require__(154),
+    cacheHas = __webpack_require__(178);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -2540,7 +2550,7 @@ module.exports = freeGlobal;
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4);
+var isObject = __webpack_require__(5);
 
 /**
  * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
@@ -2617,9 +2627,11 @@ module.exports = overArg;
  * @returns {*} Returns the property value.
  */
 function safeGet(object, key) {
-  return key == '__proto__'
-    ? undefined
-    : object[key];
+  if (key == '__proto__') {
+    return;
+  }
+
+  return object[key];
 }
 
 module.exports = safeGet;
@@ -2662,7 +2674,7 @@ module.exports = toSource;
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayLikeKeys = __webpack_require__(76),
-    baseKeysIn = __webpack_require__(165),
+    baseKeysIn = __webpack_require__(166),
     isArrayLike = __webpack_require__(31);
 
 /**
@@ -2742,11 +2754,11 @@ var _log = __webpack_require__(20);
 
 var _log2 = _interopRequireDefault(_log);
 
-var _merge = __webpack_require__(238);
+var _merge = __webpack_require__(239);
 
 var _merge2 = _interopRequireDefault(_merge);
 
-var _transform = __webpack_require__(244);
+var _transform = __webpack_require__(245);
 
 var _transform2 = _interopRequireDefault(_transform);
 
@@ -2988,7 +3000,7 @@ var _stringify = __webpack_require__(100);
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
-var _promise = __webpack_require__(59);
+var _promise = __webpack_require__(60);
 
 var _promise2 = _interopRequireDefault(_promise);
 
@@ -3008,11 +3020,11 @@ var _fs = __webpack_require__(92);
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _semver = __webpack_require__(248);
+var _semver = __webpack_require__(249);
 
 var _semver2 = _interopRequireDefault(_semver);
 
-var _utils = __webpack_require__(58);
+var _utils = __webpack_require__(59);
 
 var _log = __webpack_require__(20);
 
@@ -3079,6 +3091,15 @@ var AutoIncreaseVersion = function () {
       if (!this.packageFile) {
         return;
       }
+
+      // handle force mode - major, minor or patch can be applied trough config
+      // ONLY TO BE USED FOR TESTING PURPOSES,
+      if (_config2.default.componentsOptions.AutoIncreaseVersion.forceMode) {
+        if (typeof this[_config2.default.componentsOptions.AutoIncreaseVersion.forceMode] === 'function') {
+          return this[_config2.default.componentsOptions.AutoIncreaseVersion.forceMode]();
+        }
+      }
+
       if ((0, _utils.isArgv)('major')) {
         this.major();
       } else if ((0, _utils.isArgv)('minor')) {
@@ -3105,6 +3126,11 @@ var AutoIncreaseVersion = function () {
         return null;
       }
     }
+  }, {
+    key: 'updateContextVersion',
+    value: function updateContextVersion(newVersion) {
+      this.context.version = newVersion;
+    }
 
     /**
      * Close & save package file
@@ -3117,6 +3143,15 @@ var AutoIncreaseVersion = function () {
       var _this2 = this;
 
       this.packageFile.version = newVersion;
+
+      // prevent saving package.json file in simulate mode
+      if (_config2.default.componentsOptions.AutoIncreaseVersion.simulate) {
+        _log2.default.info('autoIncVersion : new version : ' + newVersion);
+        _log2.default.info('package.json updated!');
+        return;
+      }
+
+      // write new package.json file
       _fs2.default.writeFile(_path2.default.resolve(this.context.config.PACKAGE_JSON_PATH), (0, _stringify2.default)(this.packageFile, null, 4), function (err) {
         if (err) {
           _this2.reject(err);
@@ -3139,6 +3174,7 @@ var AutoIncreaseVersion = function () {
     key: 'major',
     value: function major() {
       var newVersion = _semver2.default.inc(this.packageFile.version, 'major');
+      this.updateContextVersion(newVersion);
       this.closePackageFile(newVersion);
     }
 
@@ -3150,6 +3186,7 @@ var AutoIncreaseVersion = function () {
     key: 'minor',
     value: function minor() {
       var newVersion = _semver2.default.inc(this.packageFile.version, 'minor');
+      this.updateContextVersion(newVersion);
       this.closePackageFile(newVersion);
     }
 
@@ -3161,6 +3198,7 @@ var AutoIncreaseVersion = function () {
     key: 'patch',
     value: function patch() {
       var newVersion = _semver2.default.inc(this.packageFile.version, 'patch');
+      this.updateContextVersion(newVersion);
       this.closePackageFile(newVersion);
     }
   }]);
@@ -3361,7 +3399,12 @@ var InjectAsComment = function () {
   }, {
     key: 'injectIntoJs',
     value: function injectIntoJs(asset) {
-      var modAsset = this.parseTags('// [' + _config2.default.SHORT + '] ', ' ');
+      var modAsset = void 0;
+      if (this.context.config.componentsOptions.InjectAsComment.multiLineCommentType) {
+        modAsset = this.parseTags('/** [' + _config2.default.SHORT + '] ', '*/ ');
+      } else {
+        modAsset = this.parseTags('// [' + _config2.default.SHORT + '] ', ' ');
+      }
       modAsset += endOfLine + ' ' + asset.source() + ' ';
       asset.source = function () {
         return modAsset;
@@ -3415,7 +3458,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _promise = __webpack_require__(59);
+var _promise = __webpack_require__(60);
 
 var _promise2 = _interopRequireDefault(_promise);
 
@@ -3538,11 +3581,11 @@ module.exports = { "default": __webpack_require__(104), __esModule: true };
 
 "use strict";
 
-var escapeStringRegexp = __webpack_require__(140);
+var escapeStringRegexp = __webpack_require__(141);
 var ansiStyles = __webpack_require__(95);
-var stripAnsi = __webpack_require__(249);
-var hasAnsi = __webpack_require__(141);
-var supportsColor = __webpack_require__(250);
+var stripAnsi = __webpack_require__(250);
+var hasAnsi = __webpack_require__(142);
+var supportsColor = __webpack_require__(251);
 var defineProps = Object.defineProperties;
 var isSimpleWindowsTerm = process.platform === 'win32' && !/^xterm/i.test(process.env.TERM);
 
@@ -3659,7 +3702,7 @@ module.exports.supportsColor = supportsColor;
 /* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var core = __webpack_require__(5);
+var core = __webpack_require__(4);
 var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
 module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
@@ -3670,8 +3713,8 @@ module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 /* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(133);
-var $Object = __webpack_require__(5).Object;
+__webpack_require__(134);
+var $Object = __webpack_require__(4).Object;
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
@@ -3681,13 +3724,13 @@ module.exports = function defineProperty(it, key, desc) {
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(134);
-__webpack_require__(136);
-__webpack_require__(139);
 __webpack_require__(135);
 __webpack_require__(137);
+__webpack_require__(140);
+__webpack_require__(136);
 __webpack_require__(138);
-module.exports = __webpack_require__(5).Promise;
+__webpack_require__(139);
+module.exports = __webpack_require__(4).Promise;
 
 
 /***/ }),
@@ -3714,7 +3757,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(43);
+var toIObject = __webpack_require__(44);
 var toLength = __webpack_require__(72);
 var toAbsoluteIndex = __webpack_require__(128);
 module.exports = function (IS_INCLUDES) {
@@ -3746,7 +3789,7 @@ var call = __webpack_require__(114);
 var isArrayIter = __webpack_require__(113);
 var anObject = __webpack_require__(6);
 var toLength = __webpack_require__(72);
-var getIterFn = __webpack_require__(131);
+var getIterFn = __webpack_require__(132);
 var BREAK = {};
 var RETURN = {};
 var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
@@ -3772,7 +3815,7 @@ exports.RETURN = RETURN;
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(10) && !__webpack_require__(62)(function () {
+module.exports = !__webpack_require__(10) && !__webpack_require__(63)(function () {
   return Object.defineProperty(__webpack_require__(38)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -3851,7 +3894,7 @@ module.exports = function (iterator, fn, value, entries) {
 
 var create = __webpack_require__(119);
 var descriptor = __webpack_require__(68);
-var setToStringTag = __webpack_require__(40);
+var setToStringTag = __webpack_require__(41);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -3946,7 +3989,8 @@ module.exports = function () {
     };
   // environments with maybe non-completely correct, but existent Promise
   } else if (Promise && Promise.resolve) {
-    var promise = Promise.resolve();
+    // Promise.resolve without an argument throws an error in LG WebOS 2
+    var promise = Promise.resolve(undefined);
     notify = function () {
       promise.then(flush);
     };
@@ -3981,8 +4025,8 @@ module.exports = function () {
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = __webpack_require__(6);
 var dPs = __webpack_require__(120);
-var enumBugKeys = __webpack_require__(61);
-var IE_PROTO = __webpack_require__(41)('IE_PROTO');
+var enumBugKeys = __webpack_require__(62);
+var IE_PROTO = __webpack_require__(42)('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE = 'prototype';
 
@@ -3995,7 +4039,7 @@ var createDict = function () {
   var gt = '>';
   var iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(63).appendChild(iframe);
+  __webpack_require__(64).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -4047,7 +4091,7 @@ module.exports = __webpack_require__(10) ? Object.defineProperties : function de
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = __webpack_require__(24);
 var toObject = __webpack_require__(129);
-var IE_PROTO = __webpack_require__(41)('IE_PROTO');
+var IE_PROTO = __webpack_require__(42)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
 module.exports = Object.getPrototypeOf || function (O) {
@@ -4064,9 +4108,9 @@ module.exports = Object.getPrototypeOf || function (O) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var has = __webpack_require__(24);
-var toIObject = __webpack_require__(43);
+var toIObject = __webpack_require__(44);
 var arrayIndexOf = __webpack_require__(108)(false);
-var IE_PROTO = __webpack_require__(41)('IE_PROTO');
+var IE_PROTO = __webpack_require__(42)('IE_PROTO');
 
 module.exports = function (object, names) {
   var O = toIObject(object);
@@ -4088,7 +4132,7 @@ module.exports = function (object, names) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = __webpack_require__(122);
-var enumBugKeys = __webpack_require__(61);
+var enumBugKeys = __webpack_require__(62);
 
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
@@ -4122,7 +4166,7 @@ module.exports = __webpack_require__(11);
 "use strict";
 
 var global = __webpack_require__(0);
-var core = __webpack_require__(5);
+var core = __webpack_require__(4);
 var dP = __webpack_require__(18);
 var DESCRIPTORS = __webpack_require__(10);
 var SPECIES = __webpack_require__(1)('species');
@@ -4140,7 +4184,7 @@ module.exports = function (KEY) {
 /* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(42);
+var toInteger = __webpack_require__(43);
 var defined = __webpack_require__(37);
 // true  -> String#at
 // false -> String#codePointAt
@@ -4163,7 +4207,7 @@ module.exports = function (TO_STRING) {
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(42);
+var toInteger = __webpack_require__(43);
 var max = Math.max;
 var min = Math.min;
 module.exports = function (index, length) {
@@ -4205,10 +4249,20 @@ module.exports = function (it, S) {
 /* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(60);
+var global = __webpack_require__(0);
+var navigator = global.navigator;
+
+module.exports = navigator && navigator.userAgent || '';
+
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var classof = __webpack_require__(61);
 var ITERATOR = __webpack_require__(1)('iterator');
 var Iterators = __webpack_require__(17);
-module.exports = __webpack_require__(5).getIteratorMethod = function (it) {
+module.exports = __webpack_require__(4).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
     || Iterators[classof(it)];
@@ -4216,7 +4270,7 @@ module.exports = __webpack_require__(5).getIteratorMethod = function (it) {
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4224,13 +4278,13 @@ module.exports = __webpack_require__(5).getIteratorMethod = function (it) {
 var addToUnscopables = __webpack_require__(106);
 var step = __webpack_require__(117);
 var Iterators = __webpack_require__(17);
-var toIObject = __webpack_require__(43);
+var toIObject = __webpack_require__(44);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__(64)(Array, 'Array', function (iterated, kind) {
+module.exports = __webpack_require__(65)(Array, 'Array', function (iterated, kind) {
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
@@ -4257,7 +4311,7 @@ addToUnscopables('entries');
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(15);
@@ -4266,21 +4320,21 @@ $export($export.S + $export.F * !__webpack_require__(10), 'Object', { defineProp
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(65);
+var LIBRARY = __webpack_require__(39);
 var global = __webpack_require__(0);
 var ctx = __webpack_require__(23);
-var classof = __webpack_require__(60);
+var classof = __webpack_require__(61);
 var $export = __webpack_require__(15);
 var isObject = __webpack_require__(16);
 var aFunction = __webpack_require__(21);
@@ -4289,12 +4343,15 @@ var forOf = __webpack_require__(109);
 var speciesConstructor = __webpack_require__(70);
 var task = __webpack_require__(71).set;
 var microtask = __webpack_require__(118)();
-var newPromiseCapabilityModule = __webpack_require__(39);
+var newPromiseCapabilityModule = __webpack_require__(40);
 var perform = __webpack_require__(66);
+var userAgent = __webpack_require__(131);
 var promiseResolve = __webpack_require__(67);
 var PROMISE = 'Promise';
 var TypeError = global.TypeError;
 var process = global.process;
+var versions = process && process.versions;
+var v8 = versions && versions.v8 || '';
 var $Promise = global[PROMISE];
 var isNode = classof(process) == 'process';
 var empty = function () { /* empty */ };
@@ -4309,7 +4366,13 @@ var USE_NATIVE = !!function () {
       exec(empty, empty);
     };
     // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
+    return (isNode || typeof PromiseRejectionEvent == 'function')
+      && promise.then(empty) instanceof FakePromise
+      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+      // we can't detect it synchronously, so just check versions
+      && v8.indexOf('6.6') !== 0
+      && userAgent.indexOf('Chrome/66') === -1;
   } catch (e) { /* empty */ }
 }();
 
@@ -4331,7 +4394,7 @@ var notify = function (promise, isReject) {
       var resolve = reaction.resolve;
       var reject = reaction.reject;
       var domain = reaction.domain;
-      var result, then;
+      var result, then, exited;
       try {
         if (handler) {
           if (!ok) {
@@ -4341,8 +4404,11 @@ var notify = function (promise, isReject) {
           if (handler === true) result = value;
           else {
             if (domain) domain.enter();
-            result = handler(value);
-            if (domain) domain.exit();
+            result = handler(value); // may throw
+            if (domain) {
+              domain.exit();
+              exited = true;
+            }
           }
           if (result === reaction.promise) {
             reject(TypeError('Promise-chain cycle'));
@@ -4351,6 +4417,7 @@ var notify = function (promise, isReject) {
           } else resolve(result);
         } else reject(value);
       } catch (e) {
+        if (domain && !exited) domain.exit();
         reject(e);
       }
     };
@@ -4485,9 +4552,9 @@ if (!USE_NATIVE) {
 }
 
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__webpack_require__(40)($Promise, PROMISE);
+__webpack_require__(41)($Promise, PROMISE);
 __webpack_require__(126)(PROMISE);
-Wrapper = __webpack_require__(5)[PROMISE];
+Wrapper = __webpack_require__(4)[PROMISE];
 
 // statics
 $export($export.S + $export.F * !USE_NATIVE, PROMISE, {
@@ -4552,7 +4619,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(116)(functio
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4560,7 +4627,7 @@ $export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(116)(functio
 var $at = __webpack_require__(127)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(64)(String, 'String', function (iterated) {
+__webpack_require__(65)(String, 'String', function (iterated) {
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
@@ -4576,14 +4643,14 @@ __webpack_require__(64)(String, 'String', function (iterated) {
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 // https://github.com/tc39/proposal-promise-finally
 
 var $export = __webpack_require__(15);
-var core = __webpack_require__(5);
+var core = __webpack_require__(4);
 var global = __webpack_require__(0);
 var speciesConstructor = __webpack_require__(70);
 var promiseResolve = __webpack_require__(67);
@@ -4603,14 +4670,14 @@ $export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://github.com/tc39/proposal-promise-try
 var $export = __webpack_require__(15);
-var newPromiseCapability = __webpack_require__(39);
+var newPromiseCapability = __webpack_require__(40);
 var perform = __webpack_require__(66);
 
 $export($export.S, 'Promise', { 'try': function (callbackfn) {
@@ -4622,10 +4689,10 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(132);
+__webpack_require__(133);
 var global = __webpack_require__(0);
 var hide = __webpack_require__(11);
 var Iterators = __webpack_require__(17);
@@ -4647,7 +4714,7 @@ for (var i = 0; i < DOMIterables.length; i++) {
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4665,18 +4732,18 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(57);
+var ansiRegex = __webpack_require__(58);
 var re = new RegExp(ansiRegex().source); // remove the `g` flag
 module.exports = re.test.bind(re);
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(7),
@@ -4689,14 +4756,14 @@ module.exports = DataView;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hashClear = __webpack_require__(195),
-    hashDelete = __webpack_require__(196),
-    hashGet = __webpack_require__(197),
-    hashHas = __webpack_require__(198),
-    hashSet = __webpack_require__(199);
+var hashClear = __webpack_require__(196),
+    hashDelete = __webpack_require__(197),
+    hashGet = __webpack_require__(198),
+    hashHas = __webpack_require__(199),
+    hashSet = __webpack_require__(200);
 
 /**
  * Creates a hash object.
@@ -4727,7 +4794,7 @@ module.exports = Hash;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(7),
@@ -4740,7 +4807,7 @@ module.exports = Promise;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(7),
@@ -4753,12 +4820,12 @@ module.exports = Set;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(45),
-    setCacheAdd = __webpack_require__(221),
-    setCacheHas = __webpack_require__(222);
+var MapCache = __webpack_require__(46),
+    setCacheAdd = __webpack_require__(222),
+    setCacheHas = __webpack_require__(223);
 
 /**
  *
@@ -4786,7 +4853,7 @@ module.exports = SetCache;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(7),
@@ -4799,7 +4866,7 @@ module.exports = WeakMap;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports) {
 
 /**
@@ -4826,7 +4893,7 @@ module.exports = apply;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports) {
 
 /**
@@ -4854,7 +4921,7 @@ module.exports = arrayEach;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports) {
 
 /**
@@ -4885,7 +4952,7 @@ module.exports = arrayFilter;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports) {
 
 /**
@@ -4912,7 +4979,7 @@ module.exports = arrayMap;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports) {
 
 /**
@@ -4938,7 +5005,7 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports) {
 
 /**
@@ -4967,10 +5034,10 @@ module.exports = arraySome;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(47),
+var baseAssignValue = __webpack_require__(48),
     eq = __webpack_require__(19);
 
 /** Used for built-in method references. */
@@ -5001,11 +5068,11 @@ module.exports = assignValue;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFor = __webpack_require__(79),
-    keys = __webpack_require__(56);
+    keys = __webpack_require__(57);
 
 /**
  * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -5023,10 +5090,10 @@ module.exports = baseForOwn;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(152),
+var arrayPush = __webpack_require__(153),
     isArray = __webpack_require__(3);
 
 /**
@@ -5049,7 +5116,7 @@ module.exports = baseGetAllKeys;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports) {
 
 /**
@@ -5068,7 +5135,7 @@ module.exports = baseHasIn;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
@@ -5092,14 +5159,14 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(46),
+var Stack = __webpack_require__(47),
     equalArrays = __webpack_require__(84),
-    equalByTag = __webpack_require__(186),
-    equalObjects = __webpack_require__(187),
-    getTag = __webpack_require__(192),
+    equalByTag = __webpack_require__(187),
+    equalObjects = __webpack_require__(188),
+    getTag = __webpack_require__(193),
     isArray = __webpack_require__(3),
     isBuffer = __webpack_require__(32),
     isTypedArray = __webpack_require__(34);
@@ -5181,10 +5248,10 @@ module.exports = baseIsEqualDeep;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(46),
+var Stack = __webpack_require__(47),
     baseIsEqual = __webpack_require__(81);
 
 /** Used to compose bitmasks for value comparisons. */
@@ -5249,12 +5316,12 @@ module.exports = baseIsMatch;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(33),
-    isMasked = __webpack_require__(203),
-    isObject = __webpack_require__(4),
+    isMasked = __webpack_require__(204),
+    isObject = __webpack_require__(5),
     toSource = __webpack_require__(90);
 
 /**
@@ -5302,11 +5369,11 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
-    isLength = __webpack_require__(54),
+    isLength = __webpack_require__(55),
     isObjectLike = __webpack_require__(8);
 
 /** `Object#toString` result references. */
@@ -5368,14 +5435,14 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMatches = __webpack_require__(166),
-    baseMatchesProperty = __webpack_require__(167),
-    identity = __webpack_require__(52),
+var baseMatches = __webpack_require__(167),
+    baseMatchesProperty = __webpack_require__(168),
+    identity = __webpack_require__(53),
     isArray = __webpack_require__(3),
-    property = __webpack_require__(239);
+    property = __webpack_require__(240);
 
 /**
  * The base implementation of `_.iteratee`.
@@ -5405,11 +5472,11 @@ module.exports = baseIteratee;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isPrototype = __webpack_require__(51),
-    nativeKeys = __webpack_require__(216);
+var isPrototype = __webpack_require__(52),
+    nativeKeys = __webpack_require__(217);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -5441,12 +5508,12 @@ module.exports = baseKeys;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4),
-    isPrototype = __webpack_require__(51),
-    nativeKeysIn = __webpack_require__(217);
+var isObject = __webpack_require__(5),
+    isPrototype = __webpack_require__(52),
+    nativeKeysIn = __webpack_require__(218);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -5480,11 +5547,11 @@ module.exports = baseKeysIn;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsMatch = __webpack_require__(160),
-    getMatchData = __webpack_require__(189),
+var baseIsMatch = __webpack_require__(161),
+    getMatchData = __webpack_require__(190),
     matchesStrictComparable = __webpack_require__(87);
 
 /**
@@ -5508,13 +5575,13 @@ module.exports = baseMatches;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqual = __webpack_require__(81),
-    get = __webpack_require__(233),
-    hasIn = __webpack_require__(234),
-    isKey = __webpack_require__(50),
+    get = __webpack_require__(234),
+    hasIn = __webpack_require__(235),
+    isKey = __webpack_require__(51),
     isStrictComparable = __webpack_require__(86),
     matchesStrictComparable = __webpack_require__(87),
     toKey = __webpack_require__(30);
@@ -5547,14 +5614,14 @@ module.exports = baseMatchesProperty;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(46),
+var Stack = __webpack_require__(47),
     assignMergeValue = __webpack_require__(77),
     baseFor = __webpack_require__(79),
-    baseMergeDeep = __webpack_require__(169),
-    isObject = __webpack_require__(4),
+    baseMergeDeep = __webpack_require__(170),
+    isObject = __webpack_require__(5),
     keysIn = __webpack_require__(91),
     safeGet = __webpack_require__(89);
 
@@ -5595,24 +5662,24 @@ module.exports = baseMerge;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assignMergeValue = __webpack_require__(77),
-    cloneBuffer = __webpack_require__(179),
-    cloneTypedArray = __webpack_require__(180),
-    copyArray = __webpack_require__(181),
-    initCloneObject = __webpack_require__(200),
-    isArguments = __webpack_require__(53),
+    cloneBuffer = __webpack_require__(180),
+    cloneTypedArray = __webpack_require__(181),
+    copyArray = __webpack_require__(182),
+    initCloneObject = __webpack_require__(201),
+    isArguments = __webpack_require__(54),
     isArray = __webpack_require__(3),
-    isArrayLikeObject = __webpack_require__(235),
+    isArrayLikeObject = __webpack_require__(236),
     isBuffer = __webpack_require__(32),
     isFunction = __webpack_require__(33),
-    isObject = __webpack_require__(4),
-    isPlainObject = __webpack_require__(236),
+    isObject = __webpack_require__(5),
+    isPlainObject = __webpack_require__(237),
     isTypedArray = __webpack_require__(34),
     safeGet = __webpack_require__(89),
-    toPlainObject = __webpack_require__(242);
+    toPlainObject = __webpack_require__(243);
 
 /**
  * A specialized version of `baseMerge` for arrays and objects which performs
@@ -5674,7 +5741,7 @@ function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, sta
       if (isArguments(objValue)) {
         newValue = toPlainObject(objValue);
       }
-      else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
+      else if (!isObject(objValue) || isFunction(objValue)) {
         newValue = initCloneObject(srcValue);
       }
     }
@@ -5695,7 +5762,7 @@ module.exports = baseMergeDeep;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports) {
 
 /**
@@ -5715,7 +5782,7 @@ module.exports = baseProperty;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(80);
@@ -5737,12 +5804,12 @@ module.exports = basePropertyDeep;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var identity = __webpack_require__(52),
-    overRest = __webpack_require__(220),
-    setToString = __webpack_require__(224);
+var identity = __webpack_require__(53),
+    overRest = __webpack_require__(221),
+    setToString = __webpack_require__(225);
 
 /**
  * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -5760,12 +5827,12 @@ module.exports = baseRest;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constant = __webpack_require__(232),
+var constant = __webpack_require__(233),
     defineProperty = __webpack_require__(83),
-    identity = __webpack_require__(52);
+    identity = __webpack_require__(53);
 
 /**
  * The base implementation of `setToString` without support for hot loop shorting.
@@ -5788,7 +5855,7 @@ module.exports = baseSetToString;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports) {
 
 /**
@@ -5814,13 +5881,13 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(26),
-    arrayMap = __webpack_require__(151),
+    arrayMap = __webpack_require__(152),
     isArray = __webpack_require__(3),
-    isSymbol = __webpack_require__(55);
+    isSymbol = __webpack_require__(56);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -5857,7 +5924,7 @@ module.exports = baseToString;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports) {
 
 /**
@@ -5877,7 +5944,7 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports) {
 
 /**
@@ -5896,7 +5963,7 @@ module.exports = cacheHas;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Uint8Array = __webpack_require__(75);
@@ -5918,7 +5985,7 @@ module.exports = cloneArrayBuffer;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(2);
@@ -5960,10 +6027,10 @@ module.exports = cloneBuffer;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)(module)))
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var cloneArrayBuffer = __webpack_require__(178);
+var cloneArrayBuffer = __webpack_require__(179);
 
 /**
  * Creates a clone of `typedArray`.
@@ -5982,7 +6049,7 @@ module.exports = cloneTypedArray;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports) {
 
 /**
@@ -6008,11 +6075,11 @@ module.exports = copyArray;
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(154),
-    baseAssignValue = __webpack_require__(47);
+var assignValue = __webpack_require__(155),
+    baseAssignValue = __webpack_require__(48);
 
 /**
  * Copies properties of `source` to `object`.
@@ -6054,7 +6121,7 @@ module.exports = copyObject;
 
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(2);
@@ -6066,11 +6133,11 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseRest = __webpack_require__(172),
-    isIterateeCall = __webpack_require__(201);
+var baseRest = __webpack_require__(173),
+    isIterateeCall = __webpack_require__(202);
 
 /**
  * Creates a function like `_.assign`.
@@ -6109,7 +6176,7 @@ module.exports = createAssigner;
 
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports) {
 
 /**
@@ -6140,15 +6207,15 @@ module.exports = createBaseFor;
 
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(26),
     Uint8Array = __webpack_require__(75),
     eq = __webpack_require__(19),
     equalArrays = __webpack_require__(84),
-    mapToArray = __webpack_require__(214),
-    setToArray = __webpack_require__(223);
+    mapToArray = __webpack_require__(215),
+    setToArray = __webpack_require__(224);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -6258,10 +6325,10 @@ module.exports = equalByTag;
 
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getAllKeys = __webpack_require__(188);
+var getAllKeys = __webpack_require__(189);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -6353,12 +6420,12 @@ module.exports = equalObjects;
 
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(156),
-    getSymbols = __webpack_require__(191),
-    keys = __webpack_require__(56);
+var baseGetAllKeys = __webpack_require__(157),
+    getSymbols = __webpack_require__(192),
+    keys = __webpack_require__(57);
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -6375,11 +6442,11 @@ module.exports = getAllKeys;
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isStrictComparable = __webpack_require__(86),
-    keys = __webpack_require__(56);
+    keys = __webpack_require__(57);
 
 /**
  * Gets the property names, values, and compare flags of `object`.
@@ -6405,7 +6472,7 @@ module.exports = getMatchData;
 
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(26);
@@ -6457,11 +6524,11 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(150),
-    stubArray = __webpack_require__(240);
+var arrayFilter = __webpack_require__(151),
+    stubArray = __webpack_require__(241);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -6493,14 +6560,14 @@ module.exports = getSymbols;
 
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DataView = __webpack_require__(142),
-    Map = __webpack_require__(44),
-    Promise = __webpack_require__(144),
-    Set = __webpack_require__(145),
-    WeakMap = __webpack_require__(147),
+var DataView = __webpack_require__(143),
+    Map = __webpack_require__(45),
+    Promise = __webpack_require__(145),
+    Set = __webpack_require__(146),
+    WeakMap = __webpack_require__(148),
     baseGetTag = __webpack_require__(12),
     toSource = __webpack_require__(90);
 
@@ -6557,7 +6624,7 @@ module.exports = getTag;
 
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports) {
 
 /**
@@ -6576,14 +6643,14 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(82),
-    isArguments = __webpack_require__(53),
+    isArguments = __webpack_require__(54),
     isArray = __webpack_require__(3),
-    isIndex = __webpack_require__(49),
-    isLength = __webpack_require__(54),
+    isIndex = __webpack_require__(50),
+    isLength = __webpack_require__(55),
     toKey = __webpack_require__(30);
 
 /**
@@ -6621,7 +6688,7 @@ module.exports = hasPath;
 
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(29);
@@ -6642,7 +6709,7 @@ module.exports = hashClear;
 
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports) {
 
 /**
@@ -6665,7 +6732,7 @@ module.exports = hashDelete;
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(29);
@@ -6701,7 +6768,7 @@ module.exports = hashGet;
 
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(29);
@@ -6730,7 +6797,7 @@ module.exports = hashHas;
 
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(29);
@@ -6759,12 +6826,12 @@ module.exports = hashSet;
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseCreate = __webpack_require__(78),
-    getPrototype = __webpack_require__(48),
-    isPrototype = __webpack_require__(51);
+    getPrototype = __webpack_require__(49),
+    isPrototype = __webpack_require__(52);
 
 /**
  * Initializes an object clone.
@@ -6783,13 +6850,13 @@ module.exports = initCloneObject;
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(19),
     isArrayLike = __webpack_require__(31),
-    isIndex = __webpack_require__(49),
-    isObject = __webpack_require__(4);
+    isIndex = __webpack_require__(50),
+    isObject = __webpack_require__(5);
 
 /**
  * Checks if the given arguments are from an iteratee call.
@@ -6819,7 +6886,7 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports) {
 
 /**
@@ -6840,10 +6907,10 @@ module.exports = isKeyable;
 
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(183);
+var coreJsData = __webpack_require__(184);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -6866,7 +6933,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports) {
 
 /**
@@ -6885,7 +6952,7 @@ module.exports = listCacheClear;
 
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(27);
@@ -6926,7 +6993,7 @@ module.exports = listCacheDelete;
 
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(27);
@@ -6951,7 +7018,7 @@ module.exports = listCacheGet;
 
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(27);
@@ -6973,7 +7040,7 @@ module.exports = listCacheHas;
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(27);
@@ -7005,12 +7072,12 @@ module.exports = listCacheSet;
 
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Hash = __webpack_require__(143),
+var Hash = __webpack_require__(144),
     ListCache = __webpack_require__(25),
-    Map = __webpack_require__(44);
+    Map = __webpack_require__(45);
 
 /**
  * Removes all key-value entries from the map.
@@ -7032,7 +7099,7 @@ module.exports = mapCacheClear;
 
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(28);
@@ -7056,7 +7123,7 @@ module.exports = mapCacheDelete;
 
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(28);
@@ -7078,7 +7145,7 @@ module.exports = mapCacheGet;
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(28);
@@ -7100,7 +7167,7 @@ module.exports = mapCacheHas;
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(28);
@@ -7128,7 +7195,7 @@ module.exports = mapCacheSet;
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports) {
 
 /**
@@ -7152,10 +7219,10 @@ module.exports = mapToArray;
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoize = __webpack_require__(237);
+var memoize = __webpack_require__(238);
 
 /** Used as the maximum memoize cache size. */
 var MAX_MEMOIZE_SIZE = 500;
@@ -7184,7 +7251,7 @@ module.exports = memoizeCapped;
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var overArg = __webpack_require__(88);
@@ -7196,7 +7263,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports) {
 
 /**
@@ -7222,7 +7289,7 @@ module.exports = nativeKeysIn;
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(85);
@@ -7242,6 +7309,14 @@ var freeProcess = moduleExports && freeGlobal.process;
 /** Used to access faster Node.js helpers. */
 var nodeUtil = (function() {
   try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
   } catch (e) {}
 }());
@@ -7251,7 +7326,7 @@ module.exports = nodeUtil;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)(module)))
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -7279,10 +7354,10 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apply = __webpack_require__(148);
+var apply = __webpack_require__(149);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
@@ -7321,7 +7396,7 @@ module.exports = overRest;
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports) {
 
 /** Used to stand-in for `undefined` hash values. */
@@ -7346,7 +7421,7 @@ module.exports = setCacheAdd;
 
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports) {
 
 /**
@@ -7366,7 +7441,7 @@ module.exports = setCacheHas;
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports) {
 
 /**
@@ -7390,11 +7465,11 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetToString = __webpack_require__(173),
-    shortOut = __webpack_require__(225);
+var baseSetToString = __webpack_require__(174),
+    shortOut = __webpack_require__(226);
 
 /**
  * Sets the `toString` method of `func` to return `string`.
@@ -7410,7 +7485,7 @@ module.exports = setToString;
 
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports) {
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -7453,7 +7528,7 @@ module.exports = shortOut;
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(25);
@@ -7474,7 +7549,7 @@ module.exports = stackClear;
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports) {
 
 /**
@@ -7498,7 +7573,7 @@ module.exports = stackDelete;
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports) {
 
 /**
@@ -7518,7 +7593,7 @@ module.exports = stackGet;
 
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports) {
 
 /**
@@ -7538,12 +7613,12 @@ module.exports = stackHas;
 
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(25),
-    Map = __webpack_require__(44),
-    MapCache = __webpack_require__(45);
+    Map = __webpack_require__(45),
+    MapCache = __webpack_require__(46);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -7578,10 +7653,10 @@ module.exports = stackSet;
 
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoizeCapped = __webpack_require__(215);
+var memoizeCapped = __webpack_require__(216);
 
 /** Used to match property names within property paths. */
 var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
@@ -7611,7 +7686,7 @@ module.exports = stringToPath;
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports) {
 
 /**
@@ -7643,7 +7718,7 @@ module.exports = constant;
 
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(80);
@@ -7682,11 +7757,11 @@ module.exports = get;
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseHasIn = __webpack_require__(157),
-    hasPath = __webpack_require__(194);
+var baseHasIn = __webpack_require__(158),
+    hasPath = __webpack_require__(195);
 
 /**
  * Checks if `path` is a direct or inherited property of `object`.
@@ -7722,7 +7797,7 @@ module.exports = hasIn;
 
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLike = __webpack_require__(31),
@@ -7761,11 +7836,11 @@ module.exports = isArrayLikeObject;
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
-    getPrototype = __webpack_require__(48),
+    getPrototype = __webpack_require__(49),
     isObjectLike = __webpack_require__(8);
 
 /** `Object#toString` result references. */
@@ -7829,10 +7904,10 @@ module.exports = isPlainObject;
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(45);
+var MapCache = __webpack_require__(46);
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -7908,11 +7983,11 @@ module.exports = memoize;
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMerge = __webpack_require__(168),
-    createAssigner = __webpack_require__(184);
+var baseMerge = __webpack_require__(169),
+    createAssigner = __webpack_require__(185);
 
 /**
  * This method is like `_.assign` except that it recursively merges own and
@@ -7953,12 +8028,12 @@ module.exports = merge;
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseProperty = __webpack_require__(170),
-    basePropertyDeep = __webpack_require__(171),
-    isKey = __webpack_require__(50),
+var baseProperty = __webpack_require__(171),
+    basePropertyDeep = __webpack_require__(172),
+    isKey = __webpack_require__(51),
     toKey = __webpack_require__(30);
 
 /**
@@ -7991,7 +8066,7 @@ module.exports = property;
 
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports) {
 
 /**
@@ -8020,7 +8095,7 @@ module.exports = stubArray;
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports) {
 
 /**
@@ -8044,10 +8119,10 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var copyObject = __webpack_require__(182),
+var copyObject = __webpack_require__(183),
     keysIn = __webpack_require__(91);
 
 /**
@@ -8082,10 +8157,10 @@ module.exports = toPlainObject;
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseToString = __webpack_require__(175);
+var baseToString = __webpack_require__(176);
 
 /**
  * Converts `value` to a string. An empty string is returned for `null`
@@ -8116,18 +8191,18 @@ module.exports = toString;
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayEach = __webpack_require__(149),
+var arrayEach = __webpack_require__(150),
     baseCreate = __webpack_require__(78),
-    baseForOwn = __webpack_require__(155),
-    baseIteratee = __webpack_require__(163),
-    getPrototype = __webpack_require__(48),
+    baseForOwn = __webpack_require__(156),
+    baseIteratee = __webpack_require__(164),
+    getPrototype = __webpack_require__(49),
     isArray = __webpack_require__(3),
     isBuffer = __webpack_require__(32),
     isFunction = __webpack_require__(33),
-    isObject = __webpack_require__(4),
+    isObject = __webpack_require__(5),
     isTypedArray = __webpack_require__(34);
 
 /**
@@ -8187,7 +8262,7 @@ module.exports = transform;
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = function (args, opts) {
@@ -8380,12 +8455,12 @@ function longest (xs) {
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var path = __webpack_require__(36);
-var minimist = __webpack_require__(245);
-var wordwrap = __webpack_require__(247);
+var minimist = __webpack_require__(246);
+var wordwrap = __webpack_require__(248);
 
 /*  Hack an instance of Argv with process.argv into Argv
     so people can do
@@ -8729,7 +8804,7 @@ function rebase (base, dir) {
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports) {
 
 var wordwrap = module.exports = function (start, stop, params) {
@@ -8811,7 +8886,7 @@ wordwrap.hard = function (start, stop) {
 
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports) {
 
 exports = module.exports = SemVer;
@@ -9061,7 +9136,10 @@ for (var i = 0; i < R; i++) {
 }
 
 exports.parse = parse;
-function parse(version, loose) {
+function parse(version, options) {
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+
   if (version instanceof SemVer)
     return version;
 
@@ -9071,35 +9149,37 @@ function parse(version, loose) {
   if (version.length > MAX_LENGTH)
     return null;
 
-  var r = loose ? re[LOOSE] : re[FULL];
+  var r = options.loose ? re[LOOSE] : re[FULL];
   if (!r.test(version))
     return null;
 
   try {
-    return new SemVer(version, loose);
+    return new SemVer(version, options);
   } catch (er) {
     return null;
   }
 }
 
 exports.valid = valid;
-function valid(version, loose) {
-  var v = parse(version, loose);
+function valid(version, options) {
+  var v = parse(version, options);
   return v ? v.version : null;
 }
 
 
 exports.clean = clean;
-function clean(version, loose) {
-  var s = parse(version.trim().replace(/^[=v]+/, ''), loose);
+function clean(version, options) {
+  var s = parse(version.trim().replace(/^[=v]+/, ''), options);
   return s ? s.version : null;
 }
 
 exports.SemVer = SemVer;
 
-function SemVer(version, loose) {
+function SemVer(version, options) {
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
   if (version instanceof SemVer) {
-    if (version.loose === loose)
+    if (version.loose === options.loose)
       return version;
     else
       version = version.version;
@@ -9111,11 +9191,13 @@ function SemVer(version, loose) {
     throw new TypeError('version is longer than ' + MAX_LENGTH + ' characters')
 
   if (!(this instanceof SemVer))
-    return new SemVer(version, loose);
+    return new SemVer(version, options);
 
-  debug('SemVer', version, loose);
-  this.loose = loose;
-  var m = version.trim().match(loose ? re[LOOSE] : re[FULL]);
+  debug('SemVer', version, options);
+  this.options = options;
+  this.loose = !!options.loose;
+
+  var m = version.trim().match(options.loose ? re[LOOSE] : re[FULL]);
 
   if (!m)
     throw new TypeError('Invalid Version: ' + version);
@@ -9165,16 +9247,16 @@ SemVer.prototype.toString = function() {
 };
 
 SemVer.prototype.compare = function(other) {
-  debug('SemVer.compare', this.version, this.loose, other);
+  debug('SemVer.compare', this.version, this.options, other);
   if (!(other instanceof SemVer))
-    other = new SemVer(other, this.loose);
+    other = new SemVer(other, this.options);
 
   return this.compareMain(other) || this.comparePre(other);
 };
 
 SemVer.prototype.compareMain = function(other) {
   if (!(other instanceof SemVer))
-    other = new SemVer(other, this.loose);
+    other = new SemVer(other, this.options);
 
   return compareIdentifiers(this.major, other.major) ||
          compareIdentifiers(this.minor, other.minor) ||
@@ -9183,7 +9265,7 @@ SemVer.prototype.compareMain = function(other) {
 
 SemVer.prototype.comparePre = function(other) {
   if (!(other instanceof SemVer))
-    other = new SemVer(other, this.loose);
+    other = new SemVer(other, this.options);
 
   // NOT having a prerelease is > having one
   if (this.prerelease.length && !other.prerelease.length)
@@ -9474,19 +9556,23 @@ function cmp(a, op, b, loose) {
 }
 
 exports.Comparator = Comparator;
-function Comparator(comp, loose) {
+function Comparator(comp, options) {
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+
   if (comp instanceof Comparator) {
-    if (comp.loose === loose)
+    if (comp.loose === !!options.loose)
       return comp;
     else
       comp = comp.value;
   }
 
   if (!(this instanceof Comparator))
-    return new Comparator(comp, loose);
+    return new Comparator(comp, options);
 
-  debug('comparator', comp, loose);
-  this.loose = loose;
+  debug('comparator', comp, options);
+  this.options = options;
+  this.loose = !!options.loose;
   this.parse(comp);
 
   if (this.semver === ANY)
@@ -9499,7 +9585,7 @@ function Comparator(comp, loose) {
 
 var ANY = {};
 Comparator.prototype.parse = function(comp) {
-  var r = this.loose ? re[COMPARATORLOOSE] : re[COMPARATOR];
+  var r = this.options.loose ? re[COMPARATORLOOSE] : re[COMPARATOR];
   var m = comp.match(r);
 
   if (!m)
@@ -9513,7 +9599,7 @@ Comparator.prototype.parse = function(comp) {
   if (!m[2])
     this.semver = ANY;
   else
-    this.semver = new SemVer(m[2], this.loose);
+    this.semver = new SemVer(m[2], this.options.loose);
 };
 
 Comparator.prototype.toString = function() {
@@ -9521,30 +9607,33 @@ Comparator.prototype.toString = function() {
 };
 
 Comparator.prototype.test = function(version) {
-  debug('Comparator.test', version, this.loose);
+  debug('Comparator.test', version, this.options.loose);
 
   if (this.semver === ANY)
     return true;
 
   if (typeof version === 'string')
-    version = new SemVer(version, this.loose);
+    version = new SemVer(version, this.options);
 
-  return cmp(version, this.operator, this.semver, this.loose);
+  return cmp(version, this.operator, this.semver, this.options);
 };
 
-Comparator.prototype.intersects = function(comp, loose) {
+Comparator.prototype.intersects = function(comp, options) {
   if (!(comp instanceof Comparator)) {
     throw new TypeError('a Comparator is required');
   }
 
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+
   var rangeTmp;
 
   if (this.operator === '') {
-    rangeTmp = new Range(comp.value, loose);
-    return satisfies(this.value, rangeTmp, loose);
+    rangeTmp = new Range(comp.value, options);
+    return satisfies(this.value, rangeTmp, options);
   } else if (comp.operator === '') {
-    rangeTmp = new Range(this.value, loose);
-    return satisfies(comp.semver, rangeTmp, loose);
+    rangeTmp = new Range(this.value, options);
+    return satisfies(comp.semver, rangeTmp, options);
   }
 
   var sameDirectionIncreasing =
@@ -9558,11 +9647,11 @@ Comparator.prototype.intersects = function(comp, loose) {
     (this.operator === '>=' || this.operator === '<=') &&
     (comp.operator === '>=' || comp.operator === '<=');
   var oppositeDirectionsLessThan =
-    cmp(this.semver, '<', comp.semver, loose) &&
+    cmp(this.semver, '<', comp.semver, options) &&
     ((this.operator === '>=' || this.operator === '>') &&
     (comp.operator === '<=' || comp.operator === '<'));
   var oppositeDirectionsGreaterThan =
-    cmp(this.semver, '>', comp.semver, loose) &&
+    cmp(this.semver, '>', comp.semver, options) &&
     ((this.operator === '<=' || this.operator === '<') &&
     (comp.operator === '>=' || comp.operator === '>'));
 
@@ -9573,23 +9662,29 @@ Comparator.prototype.intersects = function(comp, loose) {
 
 
 exports.Range = Range;
-function Range(range, loose) {
+function Range(range, options) {
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+
   if (range instanceof Range) {
-    if (range.loose === loose) {
+    if (range.loose === !!options.loose &&
+        range.includePrerelease === !!options.includePrerelease) {
       return range;
     } else {
-      return new Range(range.raw, loose);
+      return new Range(range.raw, options);
     }
   }
 
   if (range instanceof Comparator) {
-    return new Range(range.value, loose);
+    return new Range(range.value, options);
   }
 
   if (!(this instanceof Range))
-    return new Range(range, loose);
+    return new Range(range, options);
 
-  this.loose = loose;
+  this.options = options;
+  this.loose = !!options.loose;
+  this.includePrerelease = !!options.includePrerelease
 
   // First, split based on boolean or ||
   this.raw = range;
@@ -9619,9 +9714,8 @@ Range.prototype.toString = function() {
 };
 
 Range.prototype.parseRange = function(range) {
-  var loose = this.loose;
+  var loose = this.options.loose;
   range = range.trim();
-  debug('range', range, loose);
   // `1.2.3 - 1.2.4` => `>=1.2.3 <=1.2.4`
   var hr = loose ? re[HYPHENRANGELOOSE] : re[HYPHENRANGE];
   range = range.replace(hr, hyphenReplace);
@@ -9644,22 +9738,22 @@ Range.prototype.parseRange = function(range) {
 
   var compRe = loose ? re[COMPARATORLOOSE] : re[COMPARATOR];
   var set = range.split(' ').map(function(comp) {
-    return parseComparator(comp, loose);
-  }).join(' ').split(/\s+/);
-  if (this.loose) {
+    return parseComparator(comp, this.options);
+  }, this).join(' ').split(/\s+/);
+  if (this.options.loose) {
     // in loose mode, throw out any that are not valid comparators
     set = set.filter(function(comp) {
       return !!comp.match(compRe);
     });
   }
   set = set.map(function(comp) {
-    return new Comparator(comp, loose);
-  });
+    return new Comparator(comp, this.options);
+  }, this);
 
   return set;
 };
 
-Range.prototype.intersects = function(range, loose) {
+Range.prototype.intersects = function(range, options) {
   if (!(range instanceof Range)) {
     throw new TypeError('a Range is required');
   }
@@ -9668,7 +9762,7 @@ Range.prototype.intersects = function(range, loose) {
     return thisComparators.every(function(thisComparator) {
       return range.set.some(function(rangeComparators) {
         return rangeComparators.every(function(rangeComparator) {
-          return thisComparator.intersects(rangeComparator, loose);
+          return thisComparator.intersects(rangeComparator, options);
         });
       });
     });
@@ -9677,8 +9771,8 @@ Range.prototype.intersects = function(range, loose) {
 
 // Mostly just for testing and legacy API reasons
 exports.toComparators = toComparators;
-function toComparators(range, loose) {
-  return new Range(range, loose).set.map(function(comp) {
+function toComparators(range, options) {
+  return new Range(range, options).set.map(function(comp) {
     return comp.map(function(c) {
       return c.value;
     }).join(' ').trim().split(' ');
@@ -9688,15 +9782,15 @@ function toComparators(range, loose) {
 // comprised of xranges, tildes, stars, and gtlt's at this point.
 // already replaced the hyphen ranges
 // turn into a set of JUST comparators.
-function parseComparator(comp, loose) {
-  debug('comp', comp);
-  comp = replaceCarets(comp, loose);
+function parseComparator(comp, options) {
+  debug('comp', comp, options);
+  comp = replaceCarets(comp, options);
   debug('caret', comp);
-  comp = replaceTildes(comp, loose);
+  comp = replaceTildes(comp, options);
   debug('tildes', comp);
-  comp = replaceXRanges(comp, loose);
+  comp = replaceXRanges(comp, options);
   debug('xrange', comp);
-  comp = replaceStars(comp, loose);
+  comp = replaceStars(comp, options);
   debug('stars', comp);
   return comp;
 }
@@ -9711,14 +9805,16 @@ function isX(id) {
 // ~1.2, ~1.2.x, ~>1.2, ~>1.2.x --> >=1.2.0 <1.3.0
 // ~1.2.3, ~>1.2.3 --> >=1.2.3 <1.3.0
 // ~1.2.0, ~>1.2.0 --> >=1.2.0 <1.3.0
-function replaceTildes(comp, loose) {
+function replaceTildes(comp, options) {
   return comp.trim().split(/\s+/).map(function(comp) {
-    return replaceTilde(comp, loose);
+    return replaceTilde(comp, options);
   }).join(' ');
 }
 
-function replaceTilde(comp, loose) {
-  var r = loose ? re[TILDELOOSE] : re[TILDE];
+function replaceTilde(comp, options) {
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+  var r = options.loose ? re[TILDELOOSE] : re[TILDE];
   return comp.replace(r, function(_, M, m, p, pr) {
     debug('tilde', comp, _, M, m, p, pr);
     var ret;
@@ -9752,15 +9848,17 @@ function replaceTilde(comp, loose) {
 // ^1.2, ^1.2.x --> >=1.2.0 <2.0.0
 // ^1.2.3 --> >=1.2.3 <2.0.0
 // ^1.2.0 --> >=1.2.0 <2.0.0
-function replaceCarets(comp, loose) {
+function replaceCarets(comp, options) {
   return comp.trim().split(/\s+/).map(function(comp) {
-    return replaceCaret(comp, loose);
+    return replaceCaret(comp, options);
   }).join(' ');
 }
 
-function replaceCaret(comp, loose) {
-  debug('caret', comp, loose);
-  var r = loose ? re[CARETLOOSE] : re[CARET];
+function replaceCaret(comp, options) {
+  debug('caret', comp, options);
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+  var r = options.loose ? re[CARETLOOSE] : re[CARET];
   return comp.replace(r, function(_, M, m, p, pr) {
     debug('caret', comp, _, M, m, p, pr);
     var ret;
@@ -9807,16 +9905,18 @@ function replaceCaret(comp, loose) {
   });
 }
 
-function replaceXRanges(comp, loose) {
-  debug('replaceXRanges', comp, loose);
+function replaceXRanges(comp, options) {
+  debug('replaceXRanges', comp, options);
   return comp.split(/\s+/).map(function(comp) {
-    return replaceXRange(comp, loose);
+    return replaceXRange(comp, options);
   }).join(' ');
 }
 
-function replaceXRange(comp, loose) {
+function replaceXRange(comp, options) {
   comp = comp.trim();
-  var r = loose ? re[XRANGELOOSE] : re[XRANGE];
+  if (!options || typeof options !== 'object')
+    options = { loose: !!options, includePrerelease: false }
+  var r = options.loose ? re[XRANGELOOSE] : re[XRANGE];
   return comp.replace(r, function(ret, gtlt, M, m, p, pr) {
     debug('xRange', comp, ret, gtlt, M, m, p, pr);
     var xM = isX(M);
@@ -9880,8 +9980,8 @@ function replaceXRange(comp, loose) {
 
 // Because * is AND-ed with everything else in the comparator,
 // and '' means "any version", just remove the *s entirely.
-function replaceStars(comp, loose) {
-  debug('replaceStars', comp, loose);
+function replaceStars(comp, options) {
+  debug('replaceStars', comp, options);
   // Looseness is ignored here.  star is always as loose as it gets!
   return comp.trim().replace(re[STAR], '');
 }
@@ -9925,22 +10025,25 @@ Range.prototype.test = function(version) {
     return false;
 
   if (typeof version === 'string')
-    version = new SemVer(version, this.loose);
+    version = new SemVer(version, this.options);
 
   for (var i = 0; i < this.set.length; i++) {
-    if (testSet(this.set[i], version))
+    if (testSet(this.set[i], version, this.options))
       return true;
   }
   return false;
 };
 
-function testSet(set, version) {
+function testSet(set, version, options) {
   for (var i = 0; i < set.length; i++) {
     if (!set[i].test(version))
       return false;
   }
 
-  if (version.prerelease.length) {
+  if (!options)
+    options = {}
+
+  if (version.prerelease.length && !options.includePrerelease) {
     // Find the set of versions that are allowed to have prereleases
     // For example, ^1.2.3-pr.1 desugars to >=1.2.3-pr.1 <2.0.0
     // That should allow `1.2.3-pr.2` to pass.
@@ -9968,9 +10071,9 @@ function testSet(set, version) {
 }
 
 exports.satisfies = satisfies;
-function satisfies(version, range, loose) {
+function satisfies(version, range, options) {
   try {
-    range = new Range(range, loose);
+    range = new Range(range, options);
   } catch (er) {
     return false;
   }
@@ -9978,19 +10081,19 @@ function satisfies(version, range, loose) {
 }
 
 exports.maxSatisfying = maxSatisfying;
-function maxSatisfying(versions, range, loose) {
+function maxSatisfying(versions, range, options) {
   var max = null;
   var maxSV = null;
   try {
-    var rangeObj = new Range(range, loose);
+    var rangeObj = new Range(range, options);
   } catch (er) {
     return null;
   }
   versions.forEach(function (v) {
-    if (rangeObj.test(v)) { // satisfies(v, range, loose)
+    if (rangeObj.test(v)) { // satisfies(v, range, options)
       if (!max || maxSV.compare(v) === -1) { // compare(max, v, true)
         max = v;
-        maxSV = new SemVer(max, loose);
+        maxSV = new SemVer(max, options);
       }
     }
   })
@@ -9998,19 +10101,19 @@ function maxSatisfying(versions, range, loose) {
 }
 
 exports.minSatisfying = minSatisfying;
-function minSatisfying(versions, range, loose) {
+function minSatisfying(versions, range, options) {
   var min = null;
   var minSV = null;
   try {
-    var rangeObj = new Range(range, loose);
+    var rangeObj = new Range(range, options);
   } catch (er) {
     return null;
   }
   versions.forEach(function (v) {
-    if (rangeObj.test(v)) { // satisfies(v, range, loose)
+    if (rangeObj.test(v)) { // satisfies(v, range, options)
       if (!min || minSV.compare(v) === 1) { // compare(min, v, true)
         min = v;
-        minSV = new SemVer(min, loose);
+        minSV = new SemVer(min, options);
       }
     }
   })
@@ -10018,11 +10121,11 @@ function minSatisfying(versions, range, loose) {
 }
 
 exports.validRange = validRange;
-function validRange(range, loose) {
+function validRange(range, options) {
   try {
     // Return '*' instead of '' so that truthiness works.
     // This will throw if it's invalid anyway
-    return new Range(range, loose).range || '*';
+    return new Range(range, options).range || '*';
   } catch (er) {
     return null;
   }
@@ -10030,20 +10133,20 @@ function validRange(range, loose) {
 
 // Determine if version is less than all the versions possible in the range
 exports.ltr = ltr;
-function ltr(version, range, loose) {
-  return outside(version, range, '<', loose);
+function ltr(version, range, options) {
+  return outside(version, range, '<', options);
 }
 
 // Determine if version is greater than all the versions possible in the range.
 exports.gtr = gtr;
-function gtr(version, range, loose) {
-  return outside(version, range, '>', loose);
+function gtr(version, range, options) {
+  return outside(version, range, '>', options);
 }
 
 exports.outside = outside;
-function outside(version, range, hilo, loose) {
-  version = new SemVer(version, loose);
-  range = new Range(range, loose);
+function outside(version, range, hilo, options) {
+  version = new SemVer(version, options);
+  range = new Range(range, options);
 
   var gtfn, ltefn, ltfn, comp, ecomp;
   switch (hilo) {
@@ -10066,7 +10169,7 @@ function outside(version, range, hilo, loose) {
   }
 
   // If it satisifes the range it is not outside
-  if (satisfies(version, range, loose)) {
+  if (satisfies(version, range, options)) {
     return false;
   }
 
@@ -10085,9 +10188,9 @@ function outside(version, range, hilo, loose) {
       }
       high = high || comparator;
       low = low || comparator;
-      if (gtfn(comparator.semver, high.semver, loose)) {
+      if (gtfn(comparator.semver, high.semver, options)) {
         high = comparator;
-      } else if (ltfn(comparator.semver, low.semver, loose)) {
+      } else if (ltfn(comparator.semver, low.semver, options)) {
         low = comparator;
       }
     });
@@ -10111,15 +10214,15 @@ function outside(version, range, hilo, loose) {
 }
 
 exports.prerelease = prerelease;
-function prerelease(version, loose) {
-  var parsed = parse(version, loose);
+function prerelease(version, options) {
+  var parsed = parse(version, options);
   return (parsed && parsed.prerelease.length) ? parsed.prerelease : null;
 }
 
 exports.intersects = intersects;
-function intersects(r1, r2, loose) {
-  r1 = new Range(r1, loose)
-  r2 = new Range(r2, loose)
+function intersects(r1, r2, options) {
+  r1 = new Range(r1, options)
+  r2 = new Range(r2, options)
   return r1.intersects(r2)
 }
 
@@ -10141,12 +10244,12 @@ function coerce(version) {
 
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(57)();
+var ansiRegex = __webpack_require__(58)();
 
 module.exports = function (str) {
 	return typeof str === 'string' ? str.replace(ansiRegex, '') : str;
@@ -10154,7 +10257,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 250 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10211,7 +10314,7 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 251 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(94);

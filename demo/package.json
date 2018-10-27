@@ -3,20 +3,29 @@
   "version": "0.14.0",
   "description": "This is an example how to use webpack-auto-inject-version plugin in webpack",
   "scripts": {
-    "start": "webpack --config ./webpack.conf.js",
+    "start": "nodemon --watch ./webpack.conf.js --exec webpack -- --config ./webpack.conf.js",
     "patch": "webpack --config ./webpack.conf.js --env.patch",
     "minor": "webpack --config ./webpack.conf.js --env.minor",
-    "major": "webpack --config ./webpack.conf.js --env.major"
+    "major": "webpack --config ./webpack.conf.js --env.major",
+    "test": "./node_modules/.bin/jest --config tools/jest/config/jest-config.js --no-cache --runInBand"
   },
   "author": "Radoslaw Swiat",
   "license": "ISC",
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "chai": "^4.2.0",
+    "cheerio": "^1.0.0-rc.2",
+    "clean-webpack-plugin": "^0.1.19",
     "compression-webpack-plugin": "^1.1.11",
     "html-loader": "^0.4.5",
     "html-minify-loader": "^1.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.5",
     "raw-loader": "^0.5.1",
     "uglifyjs-webpack-plugin": "^1.2.3",
-    "webpack": "^2.3.3",
+    "webpack": "^2.7.0",
     "webpack-auto-inject-version": "^0.5.10"
   }
 }

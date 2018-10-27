@@ -54,6 +54,15 @@ export default class AutoIncreaseVersion {
     if (!this.packageFile) {
       return;
     }
+
+    // handle force mode - major, minor or patch can be applied trough config
+    // ONLY TO BE USED FOR TESTING PURPOSES,
+    if (config.componentsOptions.AutoIncreaseVersion.forceMode) {
+      if (typeof this[config.componentsOptions.AutoIncreaseVersion.forceMode] === 'function') {
+        return this[config.componentsOptions.AutoIncreaseVersion.forceMode]();
+      }
+    }
+
     if (isArgv('major')) {
       this.major();
     } else if (isArgv('minor')) {
@@ -83,12 +92,25 @@ export default class AutoIncreaseVersion {
     }
   }
 
+  updateContextVersion(newVersion) {
+    this.context.version = newVersion;
+  }
+
   /**
    * Close & save package file
    * @param newVersion
    */
   closePackageFile(newVersion) {
     this.packageFile.version = newVersion;
+
+    // prevent saving package.json file in simulate mode
+    if (config.componentsOptions.AutoIncreaseVersion.simulate) {
+      log.info(`autoIncVersion : new version : ${newVersion}`);
+      log.info('package.json updated!');
+      return;
+    }
+
+    // write new package.json file
     fs.writeFile(
       path.resolve(this.context.config.PACKAGE_JSON_PATH),
       JSON.stringify(this.packageFile, null, 4), (err) => {
@@ -110,6 +132,7 @@ export default class AutoIncreaseVersion {
    */
   major() {
     const newVersion = semver.inc(this.packageFile.version, 'major');
+    this.updateContextVersion(newVersion);
     this.closePackageFile(newVersion);
   }
 
@@ -118,6 +141,7 @@ export default class AutoIncreaseVersion {
    */
   minor() {
     const newVersion = semver.inc(this.packageFile.version, 'minor');
+    this.updateContextVersion(newVersion);
     this.closePackageFile(newVersion);
   }
 
@@ -126,6 +150,7 @@ export default class AutoIncreaseVersion {
    */
   patch() {
     const newVersion = semver.inc(this.packageFile.version, 'patch');
+    this.updateContextVersion(newVersion);
     this.closePackageFile(newVersion);
   }
 }

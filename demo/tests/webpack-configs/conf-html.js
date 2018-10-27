@@ -2,15 +2,15 @@ const path = require('path');
 
 const CompressionPlugin = require('compression-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // Require WebpackAutoInject from npm installed modules ( preferred )
 // var WebpackAutoInject = require('webpack-auto-inject-version');
 // Require WebpackAutoInject from dist - dev purpose only ( do not use the below line )
-const WebpackAutoInject = require('../dist/WebpackAutoInjectVersion');
+const WebpackAutoInject = require('../../../dist/WebpackAutoInjectVersion');
 
-
-module.exports = {
+module.exports = (autoInjectConfig) => ({
   watch: true,
   entry: {
     index: ['./src/main.js'],
@@ -50,36 +50,13 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(path.resolve(process.cwd(), 'dist')),
-    new WebpackAutoInject({
-      components: {
-        InjectAsComment: false,
-      },
-      componentsOptions: {
-        InjectByTag: {
-          dateFormat: 'h:MM:ss',
-        },
-      },
-      // components: {
-      //   AutoIncreaseVersion: true,
-      //   InjectAsComment: true,
-      //   InjectByTag: true,
-      // },
-      // componentsOptions: {
-      //   AutoIncreaseVersion: {
-      //     runInWatchMode: false, // it will increase version with every single build!
-      //   },
-      //   InjectAsComment: {
-      //     tag: 'Version: {version}, {date}',
-      //   },
-      //   InjectByTag: {
-      //     fileRegex: /\.+/,
-      //     dateFormat: 'h:MM:ss',
-      //   },
-      // },
-    }),
+    new WebpackAutoInject(autoInjectConfig),
     // new CompressionPlugin({
     //   algorithm: 'gzip',
     // }),
     // new UglifyJsPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve('src', 'index.html'),
+    }),
   ],
-};
+});
