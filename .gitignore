@@ -5,3 +5,4 @@ demo/node_modules/
 demo/package-lock.json
 demo/dist
 npm-debug*
+package-lock.json

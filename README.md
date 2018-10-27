@@ -241,6 +241,8 @@ to prevent stripping out AIV comments eg:
 ```
 
 # Change log
+## [1.2.2] - 27/10/2018
+- add PACKAGE_JSON_INDENT @trevyn
 ## [1.2.1] - 27/10/2018
 - security updates
 ## [1.2.0] - 27/10/2018
