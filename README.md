@@ -23,8 +23,8 @@ Auto Inject Version (AIV) can:
 - auto increase package.json version by --env.major, --env.minor, --env.patch passed into webpack
 
 # How to use
-It's easy to set it up, all you need is: 
-* use WebpackAutoInject in webpack plugins  
+It's easy to set it up, all you need is:
+* use WebpackAutoInject in webpack plugins
 * pass config as a parameter, or leave it blank as all options are "on" by default.
 
 ### Simple config example ( in webpack.conf.js )
@@ -67,7 +67,8 @@ module.exports = {
           },
           InjectAsComment: {
             tag: 'Version: {version} - {date}',
-            dateFormat: 'h:MM:ss TT'
+            dateFormat: 'h:MM:ss TT', // change timezone: `UTC:h:MM:ss` or `GMT:h:MM:ss`
+            multiLineCommentType: false, // use `/** */` instead of `//` as comment block
           },
           InjectByTag: {
             fileRegex: /\.+/,
@@ -173,11 +174,12 @@ Example:
         ...
         InjectAsComment: {
           tag: 'Build version: {version} - {date}', // default
-          dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT' // default
+          dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT', // default
+          multiLineCommentType: false, // default
         }
     })
   ]
-```  
+```
 Default: true
 
 
@@ -238,6 +240,11 @@ to prevent stripping out AIV comments eg:
 ```
 
 # Change log
+## [1.2.0] - 27/10/2018
+- inject as comment will no more be a version behind with auto increase version
+- inject as comment can now switched to multiline comment type eg /** */
+- added support for npm log levels eg `npm start -s` will disable console logs
+- unit tests added inside the `demo` folder, `npm run test`
 ## [1.1.0] - 15/03/2018
 - webpack sync apply
 - "name" has been removed as not used anyway, use SHORT instead

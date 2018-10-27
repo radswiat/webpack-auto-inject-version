@@ -14,6 +14,7 @@ export default {
     InjectAsComment: {
       tag: 'Build version: {version} - {date}',
       dateFormat: 'dddd, mmmm dS, yyyy, h:MM:ss TT',
+      multiLineCommentType: false,
     },
     InjectByTag: {
       fileRegex: /\.+/,

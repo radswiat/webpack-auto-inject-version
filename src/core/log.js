@@ -14,7 +14,11 @@ class Log {
   }
 
   getLogLevel() {
-    if (isArgv('aiv-log-full')) {
+
+    // support npm log levels
+    if (process.env.npm_config_loglevel === 'silent') {
+      this.logLevel = 0;
+    } else if (isArgv('aiv-log-full')) {
       this.logLevel = 3;
     } else if (isArgv('aiv-log-none')) {
       this.logLevel = 0;
