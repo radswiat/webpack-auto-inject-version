@@ -21,7 +21,7 @@ export default class InjectByTag {
    * @return {Promise}
    */
   apply() {
-    this.context.compiler.plugin('emit', (compilation, cb) => {
+    this.context.compiler.hooks.emit.tap((compilation, cb) => {
       // for every output file
       for (const basename in compilation.assets) {
         // only if match regex
