@@ -32,7 +32,7 @@ export default class AutoIncreaseVersion {
     // we have to register AutoIncreaseVersion instead of firing it straight away
     if (config.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
       if (this.context.compiler) {
-        this.context.compiler.plugin('emit', (compilation, cb) => {
+        this.context.compiler.hooks.emit.tap((compilation, cb) => {
           this.start();
           cb();
         });
