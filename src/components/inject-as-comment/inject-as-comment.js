@@ -30,7 +30,7 @@ export default class InjectAsComment {
    */
   apply() {
     // bind into emit hook
-    this.context.compiler.plugin('emit', (compilation, cb) => {
+    this.context.compiler.hooks.emit.tapAsync('EmitInjectAsComment', (compilation, cb) => {
       // iterate over all assets file in compilation
       for (const basename in compilation.assets) {
         // bug fix, extname is not able to handle chunk file params index.js?random123
@@ -89,7 +89,7 @@ export default class InjectAsComment {
       log.error(`unsupported tag in componentsOptions.InjectAsComment.tag [${tagName}]`);
       return tag;
     });
-    return `${baseOpen} ${tagPattern} ${baseClose}`;
+    return `${baseOpen.trim()} ${tagPattern} ${baseClose}`;
   }
 
   /**
@@ -101,8 +101,8 @@ export default class InjectAsComment {
    * @param asset
    */
   injectIntoCss(asset) {
-    let modAsset = this.parseTags(`/** [${config.SHORT}] `, ' **/ ');
-    modAsset += `${endOfLine} ${asset.source()} `;
+    let modAsset = this.parseTags(`/** ${config.SHORT}`, ' **/ ');
+    modAsset += `${endOfLine}${asset.source()} `;
     asset.source = () => modAsset;
   }
 
@@ -115,8 +115,8 @@ export default class InjectAsComment {
    * @param asset
    */
   injectIntoHtml(asset) {
-    let modAsset = this.parseTags(`<!-- [${config.SHORT}] `, ' --> ');
-    modAsset += `${endOfLine} ${asset.source()} `;
+    let modAsset = this.parseTags(`<!-- ${config.SHORT}`, ' --> ');
+    modAsset += `${endOfLine}${asset.source()} `;
     asset.source = () => modAsset;
   }
 
@@ -131,11 +131,11 @@ export default class InjectAsComment {
   injectIntoJs(asset) {
     let modAsset;
     if (this.context.config.componentsOptions.InjectAsComment.multiLineCommentType) {
-      modAsset = this.parseTags(`/** [${config.SHORT}] `, '*/ ');
+      modAsset = this.parseTags(`/** ${config.SHORT} `, '*/');
     } else {
-      modAsset = this.parseTags(`// [${config.SHORT}] `, ' ');
+      modAsset = this.parseTags(`// ${config.SHORT} `, '');
     }
-    modAsset += `${endOfLine} ${asset.source()} `;
+    modAsset += `${endOfLine}${asset.source()} `;
     asset.source = () => modAsset;
   }
 }
