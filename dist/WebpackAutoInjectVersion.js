@@ -6276,7 +6276,7 @@ var AutoIncreaseVersion = function () {
       // we have to register AutoIncreaseVersion instead of firing it straight away
       if (_config2.default.componentsOptions.AutoIncreaseVersion.runInWatchMode) {
         if (this.context.compiler) {
-          this.context.compiler.plugin('emit', function (compilation, cb) {
+          this.context.compiler.hooks.emit.tapAsync('EmitAutoIncreaseVersion', function (compilation, cb) {
             _this.start();
             cb();
           });
@@ -6486,7 +6486,7 @@ var InjectAsComment = function () {
       var _this = this;
 
       // bind into emit hook
-      this.context.compiler.plugin('emit', function (compilation, cb) {
+      this.context.compiler.hooks.emit.tapAsync('EmitInjectAsComment', function (compilation, cb) {
         // iterate over all assets file in compilation
         for (var basename in compilation.assets) {
           // bug fix, extname is not able to handle chunk file params index.js?random123
@@ -6611,9 +6611,9 @@ var InjectAsComment = function () {
     value: function injectIntoJs(asset) {
       var modAsset = void 0;
       if (this.context.config.componentsOptions.InjectAsComment.multiLineCommentType) {
-        modAsset = this.parseTags('/** ' + _config2.default.SHORT, '*/');
+        modAsset = this.parseTags('/** ' + _config2.default.SHORT + ' ', '*/');
       } else {
-        modAsset = this.parseTags('// ' + _config2.default.SHORT, '');
+        modAsset = this.parseTags('// ' + _config2.default.SHORT + ' ', '');
       }
       modAsset += '' + endOfLine + asset.source() + ' ';
       asset.source = function () {
