@@ -89,7 +89,7 @@ export default class InjectAsComment {
       log.error(`unsupported tag in componentsOptions.InjectAsComment.tag [${tagName}]`);
       return tag;
     });
-    return `${baseOpen} ${tagPattern} ${baseClose}`;
+    return `${baseOpen.trim()} ${tagPattern} ${baseClose}`;
   }
 
   /**
@@ -101,8 +101,8 @@ export default class InjectAsComment {
    * @param asset
    */
   injectIntoCss(asset) {
-    let modAsset = this.parseTags(`/** [${config.SHORT}] `, ' **/ ');
-    modAsset += `${endOfLine} ${asset.source()} `;
+    let modAsset = this.parseTags(`/** ${config.SHORT}`, ' **/ ');
+    modAsset += `${endOfLine}${asset.source()} `;
     asset.source = () => modAsset;
   }
 
@@ -115,8 +115,8 @@ export default class InjectAsComment {
    * @param asset
    */
   injectIntoHtml(asset) {
-    let modAsset = this.parseTags(`<!-- [${config.SHORT}] `, ' --> ');
-    modAsset += `${endOfLine} ${asset.source()} `;
+    let modAsset = this.parseTags(`<!-- ${config.SHORT}`, ' --> ');
+    modAsset += `${endOfLine}${asset.source()} `;
     asset.source = () => modAsset;
   }
 
@@ -131,11 +131,11 @@ export default class InjectAsComment {
   injectIntoJs(asset) {
     let modAsset;
     if (this.context.config.componentsOptions.InjectAsComment.multiLineCommentType) {
-      modAsset = this.parseTags(`/** [${config.SHORT}] `, '*/ ');
+      modAsset = this.parseTags(`/** ${config.SHORT} `, '*/');
     } else {
-      modAsset = this.parseTags(`// [${config.SHORT}] `, ' ');
+      modAsset = this.parseTags(`// ${config.SHORT} `, '');
     }
-    modAsset += `${endOfLine} ${asset.source()} `;
+    modAsset += `${endOfLine}${asset.source()} `;
     asset.source = () => modAsset;
   }
 }
